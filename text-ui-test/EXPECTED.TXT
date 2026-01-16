@@ -41,6 +41,9 @@
     Now you have 2 task(s) in the list.
     ____________________________________________________________
     ____________________________________________________________
+    Sappy got an error! Please provide a valid task number.
+    ____________________________________________________________
+    ____________________________________________________________
     I've added this task:
       [E][ ] meeting (from: 9pm to: 10pm)
     Now you have 3 task(s) in the list.
@@ -70,6 +73,16 @@
     1. [D][ ] finish cs2103t (by: friday)
     2. [T][ ] read book
     3. [E][ ] meeting (from: 9pm to: 10pm)
+    ____________________________________________________________
+    ____________________________________________________________
+    I've removed this task:
+    [T][ ] read book
+    Now you have 2 tasks in the list.
+    ____________________________________________________________
+    ____________________________________________________________
+    Here are the tasks in your list:
+    1. [D][ ] finish cs2103t (by: friday)
+    2. [E][ ] meeting (from: 9pm to: 10pm)
     ____________________________________________________________
     ____________________________________________________________
     Bye! Sappy will be very lonely until you come back!

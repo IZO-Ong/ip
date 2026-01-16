@@ -9,10 +9,13 @@ unmark 0
 blahblah
 deadline finish cs2103t /by friday
 todo read book
+mark #?
 event meeting /from 9pm /to 10pm
 list
 mark 2
 list
 unmark 2
+list
+remove 2
 list
 bye
