@@ -47,11 +47,29 @@ public class ChatBot {
         return output.toString();
     }
 
-    public String addTask(String input) {
-        tasks[taskIDCounter] = new Task(input);
-        taskIDCounter++;
+    public String addToDo(String description) {
+        Task t = new ToDo(description);
+        tasks[taskIDCounter++] = t;
+        return getSuccessMessage(t);
+    }
 
-        return "Added: " + input;
+    public String addDeadline(String input) {
+        String[] parts = input.split(" /by ");
+        Task t = new Deadline(parts[0], parts[1]);
+        tasks[taskIDCounter++] = t;
+        return getSuccessMessage(t);
+    }
+
+    public String addEvent(String input) {
+        String[] parts = input.split(" /from | /to ");
+        Task t = new Event(parts[0], parts[1], parts[2]);
+        tasks[taskIDCounter++] = t;
+        return getSuccessMessage(t);
+    }
+
+    private String getSuccessMessage(Task t) {
+        return "I've added this task:\n  " + t.toString() +
+                "\nNow you have " + taskIDCounter + " task(s) in the list.";
     }
 
     public String markTaskDone(int taskID) {
@@ -73,8 +91,14 @@ public class ChatBot {
         } else if (input.startsWith("unmark ")) {
             int taskID = Integer.parseInt(input.substring(7));
             return markTaskUndone(taskID);
+        } else if (input.startsWith("todo ")) {
+            return addToDo(input.substring(5));
+        } else if (input.startsWith("deadline ")) {
+            return addDeadline(input.substring(9));
+        } else if (input.startsWith("event ")) {
+            return addEvent(input.substring(6));
         } else {
-            return addTask(input);
+            return "I am now echoing what you just typed: " + input;
         }
     }
 }
