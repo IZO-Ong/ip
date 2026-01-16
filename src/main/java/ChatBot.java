@@ -22,7 +22,7 @@ public class ChatBot {
     }
 
     public void startUp() {
-        printResponse("Hello! I'm " + this.name + " \n" +
+        printResponse("Hello! I'm " + this.name + "\n" +
                 "What can I do for you?");
     }
 
