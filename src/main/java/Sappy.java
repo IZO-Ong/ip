@@ -13,7 +13,7 @@ public class Sappy {
             String userInput = myScan.nextLine();
 
             String response = sappy.getResponse(userInput);
-            sappy.pprint(response);
+            sappy.printResponse(response);
 
             if (sappy.isExitCommand(userInput)) {
                 running = false;
