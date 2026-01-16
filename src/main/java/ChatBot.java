@@ -101,19 +101,45 @@ public class ChatBot {
         return tasks.get(taskID - 1).markUndone();
     }
 
+    public String removeTask(int taskID) throws SappyException {
+        if (taskID > tasks.size() || taskID <= 0) {
+            throw new SappyException("That task does not exist!");
+        }
+        
+        String currTaskString = tasks.get(taskID - 1).toString();
+        
+        tasks.remove(taskID - 1);
+        
+        return "I've removed this task:\n" + currTaskString
+                + "\nNow you have " + tasks.size() + " tasks in the list.";
+    }
+
     public String getResponse(String input) {
         try {
             if (input.equalsIgnoreCase("bye")) {
                 return "Bye! " + this.name + " will be very lonely until you come back!";
             } else if (input.equalsIgnoreCase("list")) {
                 return listTasks();
-            } else if (input.startsWith("mark ")) {
-                int taskID = Integer.parseInt(input.substring(5));
-                return markTaskDone(taskID);
-            } else if (input.startsWith("unmark ")) {
-                int taskID = Integer.parseInt(input.substring(7));
-                return markTaskUndone(taskID);
-            } else if (input.startsWith("todo ")) {
+            }
+
+            // ID-based commands
+            try {
+                if (input.startsWith("mark ")) {
+                    int taskID = Integer.parseInt(input.substring(5).trim());
+                    return markTaskDone(taskID);
+                } else if (input.startsWith("unmark ")) {
+                    int taskID = Integer.parseInt(input.substring(7).trim());
+                    return markTaskUndone(taskID);
+                } else if (input.startsWith("remove ")) {
+                    int taskID = Integer.parseInt(input.substring(7).trim());
+                    return removeTask(taskID);
+                }
+            } catch (NumberFormatException e) {
+                throw new SappyException("Please provide a valid task number.");
+            }
+
+            // text-based commands
+            if (input.startsWith("todo ")) {
                 return addToDo(input.substring(5));
             } else if (input.startsWith("deadline ")) {
                 return addDeadline(input.substring(9));
