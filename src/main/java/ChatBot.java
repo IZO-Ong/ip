@@ -116,40 +116,29 @@ public class ChatBot {
 
     public String getResponse(String input) {
         try {
-            if (input.equalsIgnoreCase("bye")) {
-                return "Bye! " + this.name + " will be very lonely until you come back!";
-            } else if (input.equalsIgnoreCase("list")) {
-                return listTasks();
-            }
+            Command cmd = Command.fromString(input);
 
-            // ID-based commands
-            try {
-                if (input.startsWith("mark ")) {
-                    int taskID = Integer.parseInt(input.substring(5).trim());
-                    return markTaskDone(taskID);
-                } else if (input.startsWith("unmark ")) {
-                    int taskID = Integer.parseInt(input.substring(7).trim());
-                    return markTaskUndone(taskID);
-                } else if (input.startsWith("remove ")) {
-                    int taskID = Integer.parseInt(input.substring(7).trim());
-                    return removeTask(taskID);
-                }
-            } catch (NumberFormatException e) {
-                throw new SappyException("Please provide a valid task number.");
-            }
-
-            // text-based commands
-            if (input.startsWith("todo ")) {
-                return addToDo(input.substring(5));
-            } else if (input.startsWith("deadline ")) {
-                return addDeadline(input.substring(9));
-            } else if (input.startsWith("event ")) {
-                return addEvent(input.substring(6));
-            } else {
-                throw new SappyException("I'm sorry, I don't know what that means.");
-            }
+            return switch (cmd) {
+                case BYE -> "Bye! " + this.name + " will be very lonely until you come back!";
+                case LIST -> listTasks();
+                case MARK -> markTaskDone(parseId(input, 5));
+                case UNMARK -> markTaskUndone(parseId(input, 7));
+                case REMOVE -> removeTask(parseId(input, 7));
+                case TODO -> addToDo(input.substring(5));
+                case DEADLINE -> addDeadline(input.substring(9));
+                case EVENT -> addEvent(input.substring(6));
+                default -> throw new SappyException("I'm sorry, I don't know what that means.");
+            };
         } catch (SappyException e) {
             return e.getMessage();
+        }
+    }
+
+    private int parseId(String input, int offset) throws SappyException {
+        try {
+            return Integer.parseInt(input.substring(offset).trim());
+        } catch (NumberFormatException e) {
+            throw new SappyException("Please provide a valid task number.");
         }
     }
 }
