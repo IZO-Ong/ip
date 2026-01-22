@@ -7,6 +7,15 @@ public abstract class Task {
         isDone = false;
     }
 
+    public abstract String getTypeIcon();
+
+    public String toFileFormat() {
+        return String.format("%s | %d | %s",
+                getTypeIcon(),
+                isDone ? 1 : 0,
+                description);
+    }
+
     public String markDone() {
         if (!isDone) {
             isDone = true;
@@ -29,6 +38,6 @@ public abstract class Task {
 
     @Override
     public String toString() {
-        return getCheckboxIcon() + " " + description;
+        return getTypeIcon() + getCheckboxIcon() + " " + description;
     }
 }

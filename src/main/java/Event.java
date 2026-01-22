@@ -10,6 +10,16 @@ public class Event extends Task {
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + this.startDate + " to: " + this.endDate + ")";
+        return super.toString() + " (from: " + this.startDate + " to: " + this.endDate + ")";
+    }
+
+    @Override
+    public String getTypeIcon() { 
+        return "[E]"; 
+    }
+
+    @Override
+    public String toFileFormat() {
+        return super.toFileFormat() + " | " + startDate + " | " + endDate;
     }
 }
