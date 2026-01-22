@@ -9,6 +9,7 @@ public enum Command {
     DEADLINE(false),
     EVENT(false),
     REMOVE(false),
+    FIND(false),
     UNKNOWN(false);
 
     private final boolean isExit;
