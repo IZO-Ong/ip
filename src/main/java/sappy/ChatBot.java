@@ -114,21 +114,12 @@ public class ChatBot {
         return addTask(t);
     }
 
-    /**
-     * Adds the specified task to the internal list and triggers an automatic save.
-     * @param t The task to be added to the task list.
-     * @return A success message confirming the addition of the task.
-     */
     private String addTask(Task t) {
         taskList.add(t);
         autoSave();
         return getSuccessMessage(t);
     }
 
-    /**
-     * Attempts to save the current state of the task list to the storage file.
-     * If an I/O error occurs, a warning message is displayed through the UI.
-     */
     private void autoSave() {
         try {
             storage.save(taskList.getAllTasks());
@@ -137,12 +128,6 @@ public class ChatBot {
         }
     }
 
-    /**
-     * Generates a confirmation message containing details of the newly added task
-     * and the updated total count of tasks in the list.
-     * @param t The task that was successfully added.
-     * @return A formatted success message.
-     */
     private String getSuccessMessage(Task t) {
         return "I've added this task:\n  " + t.toString() +
                 "\nNow you have " + taskList.getSize() + " task(s) in the list.";
