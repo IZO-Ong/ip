@@ -7,11 +7,11 @@ import java.util.ArrayList;
 
 public class Storage {
     private final String filePath;
-    
+
     public Storage(String filePath) {
         this.filePath = filePath;
     }
-    
+
     public void save(ArrayList<Task> tasks) throws IOException {
         File f = new File(filePath);
 
@@ -53,7 +53,7 @@ public class Storage {
         default:
             throw new SappyException("Unknown task type: " + type);
         }
-        
+
         if (isDone) {
             task.markDone();
         }
@@ -65,9 +65,14 @@ public class Storage {
         ArrayList<Task> loadedTasks = new ArrayList<>();
         File f = new File(filePath);
 
+        if (!f.exists()) {
+            return loadedTasks;
+        }
+
         try (Scanner s = new Scanner(f)) {
             while (s.hasNext()) {
                 String line = s.nextLine();
+                if (line.trim().isEmpty()) continue;
                 loadedTasks.add(parseLineToTask(line));
             }
         } catch (FileNotFoundException e) {
