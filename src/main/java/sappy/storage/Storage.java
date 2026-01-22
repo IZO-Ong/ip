@@ -13,13 +13,29 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
 
+/**
+ * Handles the loading and saving of task data to a local file.
+ * This class ensures that task lists persist across different application sessions.
+ */
 public class Storage {
     private final String filePath;
 
+    /**
+     * Initializes a Storage instance with a specified file path.
+     *
+     * @param filePath The path to the file where task data is stored.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
 
+    /**
+     * Saves the provided list of tasks to the storage file.
+     * If the directory for the file does not exist, it will be created.
+     *
+     * @param tasks The list of tasks to be saved.
+     * @throws IOException If an error occurs during the file writing process.
+     */
     public void save(ArrayList<Task> tasks) throws IOException {
         File f = new File(filePath);
 
@@ -35,6 +51,13 @@ public class Storage {
         }
     }
 
+    /**
+     * Converts a single line from the storage file into a Task object.
+     *
+     * @param line The raw string line from the file.
+     * @return A Task object representing the stored data.
+     * @throws SappyException If the line format is unrecognized or corrupted.
+     */
     public static Task parseLineToTask(String line) throws SappyException {
         String[] parts = line.split(" \\| ");
 
@@ -69,6 +92,13 @@ public class Storage {
         return task;
     }
 
+    /**
+     * Loads the task list from the storage file.
+     * Returns an empty list if the file does not exist.
+     *
+     * @return An ArrayList of tasks loaded from the file.
+     * @throws SappyException If the file content cannot be correctly parsed.
+     */
     public ArrayList<Task> load() throws SappyException {
         ArrayList<Task> loadedTasks = new ArrayList<>();
         File f = new File(filePath);
