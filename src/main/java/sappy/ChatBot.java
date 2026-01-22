@@ -174,6 +174,38 @@ public class ChatBot {
     }
 
     /**
+     * Returns a formatted string of tasks that match the specified keyword.
+     *
+     * @param keyword The string to search for within task descriptions.
+     * @return A formatted list of matching tasks.
+     */
+    public String findTasks(String keyword) {
+        StringBuilder output = new StringBuilder();
+        int count = 1;
+
+        for (int i = 0; i < taskList.getSize(); i++) {
+            try {
+                Task task = taskList.get(i);
+                if (task.toString().contains(keyword)) {
+                    if (count > 1) {
+                        output.append("\n");
+                    }
+                    output.append(count).append(".").append(task.toString());
+                    count++;
+                }
+            } catch (SappyException ignored) {
+                // index validation is handled by TaskList
+            }
+        }
+
+        if (count == 1) {
+            return "No matching tasks found in your list.";
+        }
+
+        return "Here are the matching tasks in your list:\n" + output.toString();
+    }
+
+    /**
      * Processes user input and returns the appropriate response string.
      *
      * @param input The raw user command string.
@@ -196,6 +228,8 @@ public class ChatBot {
                 return markTaskUndone(Parser.parseId(input, 7));
             case REMOVE:
                 return removeTask(Parser.parseId(input, 7));
+            case FIND:
+                return findTasks(Parser.parseKeyword(input, 5));
             case TODO:
                 return addToDo(Parser.parseDescription(input, 5));
             case DEADLINE:
