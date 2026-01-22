@@ -4,10 +4,20 @@ import java.util.ArrayList;
 public class ChatBot {
     private final ArrayList<Task> tasks;
     private final String name;
+    private final Storage storage;
 
-    public ChatBot(String name) {
+    public ChatBot(String name, String filePath) {
         this.name = name;
-        this.tasks = new ArrayList<>();
+        this.storage = new Storage(filePath);
+
+        ArrayList<Task> tempTasks;
+        try {
+            tempTasks = storage.load();
+        } catch (SappyException e) {
+            printResponse("Warning: " + e.getMessage() + "\nStarting with an empty list.");
+            tempTasks = new ArrayList<>();
+        }
+        this.tasks = tempTasks;
     }
 
     public void printResponse(String text) {
@@ -50,8 +60,7 @@ public class ChatBot {
             throw new SappyException("A description of a todo is required.");
         }
         Task t = new ToDo(description);
-        tasks.add(t);
-        return getSuccessMessage(t);
+        return addTask(t);
     }
 
     public String addDeadline(String input) throws SappyException {
@@ -65,8 +74,7 @@ public class ChatBot {
             throw new SappyException("A description and date of a deadline are required.");
         }
         Task t = new Deadline(parts[0], parts[1]);
-        tasks.add(t);
-        return getSuccessMessage(t);
+        return addTask(t);
     }
 
     public String addEvent(String input) throws SappyException {
@@ -78,8 +86,21 @@ public class ChatBot {
             throw new SappyException("A description, from and to date of an event is required.");
         }
         Task t = new Event(parts[0], parts[1], parts[2]);
+        return addTask(t);
+    }
+    
+    private String addTask(Task t) {
         tasks.add(t);
+        autoSave();
         return getSuccessMessage(t);
+    }
+
+    private void autoSave() {
+        try {
+            storage.save(this.tasks);
+        } catch (java.io.IOException e) {
+            printResponse("Error: Could not save task: " + e.getMessage());
+        }
     }
 
     private String getSuccessMessage(Task t) {
@@ -91,14 +112,18 @@ public class ChatBot {
         if (taskID > tasks.size() || taskID <= 0) {
             throw new SappyException("That task does not exist!");
         }
-        return tasks.get(taskID - 1).markDone();
+        String response = tasks.get(taskID - 1).markDone();
+        autoSave();
+        return response;
     }
 
     public String markTaskUndone(int taskID) throws SappyException {
         if (taskID > tasks.size() || taskID <= 0) {
             throw new SappyException("That task does not exist!");
         }
-        return tasks.get(taskID - 1).markUndone();
+        String response = tasks.get(taskID - 1).markUndone();
+        autoSave();
+        return response;
     }
 
     public String removeTask(int taskID) throws SappyException {
@@ -109,6 +134,7 @@ public class ChatBot {
         String currTaskString = tasks.get(taskID - 1).toString();
         
         tasks.remove(taskID - 1);
+        autoSave();
         
         return "I've removed this task:\n" + currTaskString
                 + "\nNow you have " + tasks.size() + " tasks in the list.";
