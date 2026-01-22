@@ -1,4 +1,7 @@
-import java.util.Scanner;
+package sappy;
+
+import sappy.ui.Ui;
+import sappy.command.Command;
 
 public class Sappy {
     private final String botName = "Sappy";

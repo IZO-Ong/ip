@@ -1,3 +1,14 @@
+package sappy;
+
+import sappy.command.Command;
+import sappy.storage.Storage;
+import sappy.task.TaskList;
+import sappy.task.Task;
+import sappy.task.ToDo;
+import sappy.task.Deadline;
+import sappy.task.Event;
+import sappy.parser.Parser;
+import sappy.ui.Ui;
 import java.lang.StringBuilder;
 
 public class ChatBot {
