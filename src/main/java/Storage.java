@@ -15,6 +15,7 @@ public class Storage {
     public void save(ArrayList<Task> tasks) throws IOException {
         File f = new File(filePath);
 
+        // if data folder does not exist yet, create folder
         if (f.getParentFile() != null && !f.getParentFile().exists()) {
             f.getParentFile().mkdirs();
         }
