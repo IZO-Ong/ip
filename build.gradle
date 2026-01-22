@@ -32,8 +32,7 @@ application {
 }
 
 shadowJar {
-    archiveBaseName = "sappy"
-    archiveClassifier = null
+    archiveFileName = 'sappy.jar'
 }
 
 run{
