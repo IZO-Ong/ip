@@ -1,3 +1,7 @@
+package sappy.task;
+
+import sappy.SappyException;
+
 import java.util.ArrayList;
 
 public class TaskList {

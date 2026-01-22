@@ -1,3 +1,5 @@
+package sappy.ui;
+
 import java.util.Scanner;
 
 public class Ui {

@@ -1,3 +1,5 @@
+package sappy.command;
+
 public enum Command {
     BYE(true),
     LIST(false),

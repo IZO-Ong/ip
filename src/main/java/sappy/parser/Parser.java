@@ -1,3 +1,7 @@
+package sappy.parser;
+
+import sappy.SappyException;
+
 public class Parser {
     
     public static int parseId(String input, int offset) throws SappyException {
