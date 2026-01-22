@@ -5,36 +5,21 @@ public class ChatBot {
     private final ArrayList<Task> tasks;
     private final String name;
     private final Storage storage;
+    private final Ui ui;
 
-    public ChatBot(String name, String filePath) {
+    public ChatBot(String name, String filePath, Ui ui) {
         this.name = name;
+        this.ui = ui;
         this.storage = new Storage(filePath);
 
         ArrayList<Task> tempTasks;
         try {
             tempTasks = storage.load();
         } catch (SappyException e) {
-            printResponse("Warning: " + e.getMessage() + "\nStarting with an empty list.");
+            ui.printResponse("Warning: " + e.getMessage() + "\nStarting with an empty list.");
             tempTasks = new ArrayList<>();
         }
         this.tasks = tempTasks;
-    }
-
-    public void printResponse(String text) {
-        String indent = "    ";
-        String line = "____________________________________________________________";
-
-        System.out.println(indent + line);
-
-        String indentedText = indent + text.replace("\n", "\n" + indent);
-        System.out.println(indentedText);
-
-        System.out.println(indent + line);
-    }
-
-    public void startUp() {
-        printResponse("Hello! I'm " + this.name + "\n" +
-                "What can I do for you?");
     }
 
     public boolean isExitCommand(String input) {
@@ -97,7 +82,7 @@ public class ChatBot {
         try {
             storage.save(this.tasks);
         } catch (java.io.IOException e) {
-            printResponse("Error: Could not save task: " + e.getMessage());
+            ui.printResponse("Error: Could not save task: " + e.getMessage());
         }
     }
 
