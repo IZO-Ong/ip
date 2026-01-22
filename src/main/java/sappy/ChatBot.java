@@ -136,12 +136,12 @@ public class ChatBot {
     /**
      * Marks a specific task as completed.
      *
-     * @param taskID The 1-based index of the task in the list.
+     * @param taskId The 1-based index of the task in the list.
      * @return Confirmation message from the TaskList.
-     * @throws SappyException If the taskID is invalid.
+     * @throws SappyException If the taskId is invalid.
      */
-    public String markTaskDone(int taskID) throws SappyException {
-        String response = taskList.markDone(taskID - 1);
+    public String markTaskDone(int taskId) throws SappyException {
+        String response = taskList.markDone(taskId - 1);
         autoSave();
         return response;
     }
@@ -149,12 +149,12 @@ public class ChatBot {
     /**
      * Marks a specific task as not completed.
      *
-     * @param taskID The 1-based index of the task in the list.
+     * @param taskId The 1-based index of the task in the list.
      * @return Confirmation message from the TaskList.
-     * @throws SappyException If the taskID is invalid.
+     * @throws SappyException If the taskId is invalid.
      */
-    public String markTaskUndone(int taskID) throws SappyException {
-        String response = taskList.markUndone(taskID - 1);
+    public String markTaskUndone(int taskId) throws SappyException {
+        String response = taskList.markUndone(taskId - 1);
         autoSave();
         return response;
     }
@@ -162,12 +162,12 @@ public class ChatBot {
     /**
      * Removes a task from the list permanently.
      *
-     * @param taskID The 1-based index of the task to be removed.
+     * @param taskId The 1-based index of the task to be removed.
      * @return Confirmation message containing the removed task details.
      * @throws SappyException If the taskID is invalid.
      */
-    public String removeTask(int taskID) throws SappyException {
-        Task removed = taskList.remove(taskID - 1);
+    public String removeTask(int taskId) throws SappyException {
+        Task removed = taskList.remove(taskId - 1);
         autoSave();
         return "I've removed this task:\n" + removed.toString()
                 + "\nNow you have " + taskList.getSize() + " tasks in the list.";
