@@ -46,7 +46,7 @@ public class ChatBot {
 
     public String addToDo(String description) throws SappyException {
         if (description.trim().isEmpty()) {
-            throw new SappyException("A description of a todo is required.");
+            throw new SappyException("The description cannot be empty.");
         }
         Task t = new ToDo(description);
         return addTask(t);
@@ -138,7 +138,7 @@ public class ChatBot {
             case EVENT:
                 return addEvent(input.substring(6));
             default:
-                throw new SappyException("I'm sorry, I don't know what that means.");
+                return "I'm sorry, I don't know what that means.";
             }
         } catch (SappyException e) {
             return e.getMessage();
