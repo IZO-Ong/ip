@@ -118,17 +118,26 @@ public class ChatBot {
         try {
             Command cmd = Command.fromString(input);
 
-            return switch (cmd) {
-                case BYE -> "Bye! " + this.name + " will be very lonely until you come back!";
-                case LIST -> listTasks();
-                case MARK -> markTaskDone(parseId(input, 5));
-                case UNMARK -> markTaskUndone(parseId(input, 7));
-                case REMOVE -> removeTask(parseId(input, 7));
-                case TODO -> addToDo(input.substring(5));
-                case DEADLINE -> addDeadline(input.substring(9));
-                case EVENT -> addEvent(input.substring(6));
-                default -> throw new SappyException("I'm sorry, I don't know what that means.");
-            };
+            switch (cmd) {
+            case BYE:
+                return "Bye! " + this.name + " will be very lonely until you come back!";
+            case LIST:
+                return listTasks();
+            case MARK:
+                return markTaskDone(parseId(input, 5));
+            case UNMARK:
+                return markTaskUndone(parseId(input, 7));
+            case REMOVE:
+                return removeTask(parseId(input, 7));
+            case TODO:
+                return addToDo(input.substring(5));
+            case DEADLINE:
+                return addDeadline(input.substring(9));
+            case EVENT:
+                return addEvent(input.substring(6));
+            default:
+                throw new SappyException("I'm sorry, I don't know what that means.");
+            }
         } catch (SappyException e) {
             return e.getMessage();
         }
