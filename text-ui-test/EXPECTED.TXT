@@ -6,7 +6,7 @@
     Sappy got an error! I'm sorry, I don't know what that means.
     ____________________________________________________________
     ____________________________________________________________
-    Sappy got an error! A description of a todo is required.
+    Sappy got an error! The description cannot be empty.
     ____________________________________________________________
     ____________________________________________________________
     Sappy got an error! A deadline must have a /by date.

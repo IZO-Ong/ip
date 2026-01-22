@@ -1,27 +1,36 @@
 import java.util.Scanner;
 
 public class Sappy {
+    private final String botName = "Sappy";
+    private final String filePath = "./data/sappy.txt";
 
-    private static final String FILE_PATH = "./data/sappy.txt";
+    private final Ui ui;
+    private final ChatBot chatbot;
 
-    public static void main(String[] args) {
-        Scanner myScan = new Scanner(System.in);
-        ChatBot sappy = new ChatBot("Sappy", FILE_PATH);
-        sappy.startUp();
+    public Sappy() {
+        this.ui = new Ui();
+        this.chatbot = new ChatBot(botName, filePath, ui);
+    }
+
+    public void run() {
+        ui.startUp(botName);
 
         boolean running = true;
-
+        
         while (running) {
-            String userInput = myScan.nextLine();
-
-            String response = sappy.getResponse(userInput);
-            sappy.printResponse(response);
-
-            if (sappy.isExitCommand(userInput)) {
+            String userInput = ui.readCommand();
+            Command cmd = Command.fromString(userInput);
+            
+            if (cmd.isExit()) {
                 running = false;
             }
-        }
 
-        myScan.close();
+            String response = chatbot.getResponse(userInput);
+            ui.printResponse(response);
+        }
+    }
+
+    public static void main(String[] args) {
+        new Sappy().run();
     }
 }

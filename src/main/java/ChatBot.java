@@ -1,56 +1,34 @@
 import java.lang.StringBuilder;
-import java.util.ArrayList;
 
 public class ChatBot {
-    private final ArrayList<Task> tasks;
+    private final TaskList taskList;
     private final String name;
     private final Storage storage;
+    private final Ui ui;
 
-    public ChatBot(String name, String filePath) {
+    public ChatBot(String name, String filePath, Ui ui) {
         this.name = name;
+        this.ui = ui;
         this.storage = new Storage(filePath);
 
-        ArrayList<Task> tempTasks;
+        TaskList loadedTasks;
         try {
-            tempTasks = storage.load();
+            loadedTasks = new TaskList(storage.load());
         } catch (SappyException e) {
-            printResponse("Warning: " + e.getMessage() + "\nStarting with an empty list.");
-            tempTasks = new ArrayList<>();
+            ui.printResponse("Warning: " + e.getMessage() + "\nStarting with an empty list.");
+            loadedTasks = new TaskList();
         }
-        this.tasks = tempTasks;
-    }
-
-    public void printResponse(String text) {
-        String indent = "    ";
-        String line = "____________________________________________________________";
-
-        System.out.println(indent + line);
-
-        String indentedText = indent + text.replace("\n", "\n" + indent);
-        System.out.println(indentedText);
-
-        System.out.println(indent + line);
-    }
-
-    public void startUp() {
-        printResponse("Hello! I'm " + this.name + "\n" +
-                "What can I do for you?");
-    }
-
-    public boolean isExitCommand(String input) {
-        return input.equalsIgnoreCase("bye");
+        this.taskList = loadedTasks;
     }
 
     public String listTasks() {
         StringBuilder output = new StringBuilder();
         output.append("Here are the tasks in your list:\n");
-        for (int i = 0; i < tasks.size(); i++) {
-
-            if (i > 0) {
-                output.append("\n");
-            }
-
-            output.append(i + 1).append(". ").append(tasks.get(i).toString());
+        for (int i = 0; i < taskList.getSize(); i++) {
+            try {
+                if (i > 0) output.append("\n");
+                output.append(i + 1).append(". ").append(taskList.get(i).toString());
+            } catch (SappyException ignored) {}
         }
         return output.toString();
     }
@@ -86,77 +64,66 @@ public class ChatBot {
         Task t = new Event(parts[0], parts[1], parts[2]);
         return addTask(t);
     }
-    
+
     private String addTask(Task t) {
-        tasks.add(t);
+        taskList.add(t);
         autoSave();
         return getSuccessMessage(t);
     }
 
     private void autoSave() {
         try {
-            storage.save(this.tasks);
+            storage.save(taskList.getAllTasks());
         } catch (java.io.IOException e) {
-            printResponse("Error: Could not save task: " + e.getMessage());
+            ui.printResponse("Error: Could not save task: " + e.getMessage());
         }
     }
 
     private String getSuccessMessage(Task t) {
         return "I've added this task:\n  " + t.toString() +
-                "\nNow you have " + tasks.size() + " task(s) in the list.";
+                "\nNow you have " + taskList.getSize() + " task(s) in the list.";
     }
 
     public String markTaskDone(int taskID) throws SappyException {
-        if (taskID > tasks.size() || taskID <= 0) {
-            throw new SappyException("That task does not exist!");
-        }
-        String response = tasks.get(taskID - 1).markDone();
+        String response = taskList.markDone(taskID - 1);
         autoSave();
         return response;
     }
 
     public String markTaskUndone(int taskID) throws SappyException {
-        if (taskID > tasks.size() || taskID <= 0) {
-            throw new SappyException("That task does not exist!");
-        }
-        String response = tasks.get(taskID - 1).markUndone();
+        String response = taskList.markUndone(taskID - 1);
         autoSave();
         return response;
     }
 
     public String removeTask(int taskID) throws SappyException {
-        if (taskID > tasks.size() || taskID <= 0) {
-            throw new SappyException("That task does not exist!");
-        }
-        
-        String currTaskString = tasks.get(taskID - 1).toString();
-        
-        tasks.remove(taskID - 1);
+        Task removed = taskList.remove(taskID - 1);
         autoSave();
-        
-        return "I've removed this task:\n" + currTaskString
-                + "\nNow you have " + tasks.size() + " tasks in the list.";
+        return "I've removed this task:\n" + removed.toString()
+                + "\nNow you have " + taskList.getSize() + " tasks in the list.";
     }
 
     public String getResponse(String input) {
         try {
             Command cmd = Command.fromString(input);
 
-            switch (cmd) {
-            case BYE:
+            if (cmd.isExit()) {
                 return "Bye! " + this.name + " will be very lonely until you come back!";
+            }
+
+            switch (cmd) {
             case LIST:
                 return listTasks();
             case MARK:
-                return markTaskDone(parseId(input, 5));
+                return markTaskDone(Parser.parseId(input, 5));
             case UNMARK:
-                return markTaskUndone(parseId(input, 7));
+                return markTaskUndone(Parser.parseId(input, 7));
             case REMOVE:
-                return removeTask(parseId(input, 7));
+                return removeTask(Parser.parseId(input, 7));
             case TODO:
-                return addToDo(input.substring(5));
+                return addToDo(Parser.parseDescription(input, 5));
             case DEADLINE:
-                return addDeadline(input.substring(9));
+                return addDeadline(input.substring(9)); // You can further refine these too
             case EVENT:
                 return addEvent(input.substring(6));
             default:
@@ -164,14 +131,6 @@ public class ChatBot {
             }
         } catch (SappyException e) {
             return e.getMessage();
-        }
-    }
-
-    private int parseId(String input, int offset) throws SappyException {
-        try {
-            return Integer.parseInt(input.substring(offset).trim());
-        } catch (NumberFormatException e) {
-            throw new SappyException("Please provide a valid task number.");
         }
     }
 }
