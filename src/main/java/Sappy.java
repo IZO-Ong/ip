@@ -11,17 +11,18 @@ public class Sappy {
         this.ui = new Ui();
         this.chatbot = new ChatBot(botName, filePath, ui);
     }
-    
+
     public void run() {
         ui.startUp(botName);
 
-        boolean isRunning = true;
+        boolean running = true;
         
-        while (isRunning) {
+        while (running) {
             String userInput = ui.readCommand();
+            Command cmd = Command.fromString(userInput);
             
-            if (chatbot.isExitCommand(userInput)) {
-                isRunning = false;
+            if (cmd.isExit()) {
+                running = false;
             }
 
             String response = chatbot.getResponse(userInput);

@@ -21,10 +21,6 @@ public class ChatBot {
         this.taskList = loadedTasks;
     }
 
-    public boolean isExitCommand(String input) {
-        return input.equalsIgnoreCase("bye");
-    }
-
     public String listTasks() {
         StringBuilder output = new StringBuilder();
         output.append("Here are the tasks in your list:\n");
@@ -117,21 +113,23 @@ public class ChatBot {
         try {
             Command cmd = Command.fromString(input);
 
-            switch (cmd) {
-            case BYE:
+            if (cmd.isExit()) {
                 return "Bye! " + this.name + " will be very lonely until you come back!";
+            }
+
+            switch (cmd) {
             case LIST:
                 return listTasks();
             case MARK:
-                return markTaskDone(parseId(input, 5));
+                return markTaskDone(Parser.parseId(input, 5));
             case UNMARK:
-                return markTaskUndone(parseId(input, 7));
+                return markTaskUndone(Parser.parseId(input, 7));
             case REMOVE:
-                return removeTask(parseId(input, 7));
+                return removeTask(Parser.parseId(input, 7));
             case TODO:
-                return addToDo(input.substring(5));
+                return addToDo(Parser.parseDescription(input, 5));
             case DEADLINE:
-                return addDeadline(input.substring(9));
+                return addDeadline(input.substring(9)); // You can further refine these too
             case EVENT:
                 return addEvent(input.substring(6));
             default:
@@ -139,14 +137,6 @@ public class ChatBot {
             }
         } catch (SappyException e) {
             return e.getMessage();
-        }
-    }
-
-    private int parseId(String input, int offset) throws SappyException {
-        try {
-            return Integer.parseInt(input.substring(offset).trim());
-        } catch (NumberFormatException e) {
-            throw new SappyException("Please provide a valid task number.");
         }
     }
 }
