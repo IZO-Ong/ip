@@ -67,9 +67,7 @@ public class ChatBot {
         if (!input.contains("/by")) {
             throw new SappyException("A deadline must have a /by date.");
         }
-
         String[] parts = input.split(" /by ");
-
         if (parts.length < 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
             throw new SappyException("A description and date of a deadline are required.");
         }

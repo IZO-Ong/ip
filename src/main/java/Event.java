@@ -1,21 +1,31 @@
-public class Event extends Task {
-    private final String startDate;
-    private final String endDate;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
-    public Event(String description, String startDate, String endDate) {
+public class Event extends Task {
+    private final LocalDate startDate;
+    private final LocalDate endDate;
+
+    public Event(String description, String startStr, String endStr) throws SappyException {
         super(description);
-        this.startDate = startDate;
-        this.endDate = endDate;
+        try {
+            this.startDate = LocalDate.parse(startStr.trim());
+            this.endDate = LocalDate.parse(endStr.trim());
+        } catch (DateTimeParseException e) {
+            throw new SappyException("Please provide dates in yyyy-mm-dd format.");
+        }
     }
 
     @Override
     public String toString() {
-        return super.toString() + " (from: " + this.startDate + " to: " + this.endDate + ")";
+        String startFormat = startDate.format(DateTimeFormatter.ofPattern("MMM dd yyyy"));
+        String endFormat = endDate.format(DateTimeFormatter.ofPattern("MMM dd yyyy"));
+        return super.toString() + " (from: " + startFormat + " to: " + endFormat + ")";
     }
 
     @Override
-    public String getTypeIcon() { 
-        return "[E]"; 
+    public String getTypeIcon() {
+        return "[E]";
     }
 
     @Override
