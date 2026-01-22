@@ -85,19 +85,13 @@ public class ChatBot {
     }
 
     public String markTaskDone(int taskID) throws SappyException {
-        if (taskID > taskList.getSize() || taskID <= 0) {
-            throw new SappyException("That task does not exist!");
-        }
-        String response = taskList.get(taskID - 1).markDone();
+        String response = taskList.markDone(taskID - 1);
         autoSave();
         return response;
     }
 
     public String markTaskUndone(int taskID) throws SappyException {
-        if (taskID > taskList.getSize() || taskID <= 0) {
-            throw new SappyException("That task does not exist!");
-        }
-        String response = taskList.get(taskID - 1).markUndone();
+        String response = taskList.markUndone(taskID - 1);
         autoSave();
         return response;
     }
