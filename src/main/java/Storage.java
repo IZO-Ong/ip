@@ -22,6 +22,40 @@ public class Storage {
         fw.close();
     }
 
+    public static Task parseLineToTask(String line) throws SappyException {
+        String[] parts = line.split(" \\| ");
+
+        if (parts.length < 3) {
+            throw new SappyException("Corrupted task found in storage file.");
+        }
+
+        String type = parts[0];
+        boolean isDone = parts[1].equals("1");
+        String description = parts[2];
+
+        Task task;
+
+        switch (type) {
+        case "[T]":
+            task = new ToDo(description);
+            break;
+        case "[D]":
+            task = new Deadline(description, parts[3]);
+            break;
+        case "[E]":
+            task = new Event(description, parts[3], parts[4]);
+            break;
+        default:
+            throw new SappyException("Unknown task type: " + type);
+        }
+        
+        if (isDone) {
+            task.markDone();
+        }
+
+        return task;
+    }
+
     public ArrayList<Task> load() throws SappyException {
         ArrayList<Task> loadedTasks = new ArrayList<>();
         File f = new File(filePath);
