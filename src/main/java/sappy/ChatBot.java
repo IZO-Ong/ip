@@ -45,6 +45,29 @@ public class ChatBot {
     }
 
     /**
+     * Initializes a ChatBot instance with a specific storage object.
+     * Use this constructor for testing with stubs.
+     *
+     * @param name Name of the chatbot.
+     * @param storage The storage component to use.
+     * @param ui The user interface component for displaying messages.
+     */
+    public ChatBot(String name, Storage storage, Ui ui) {
+        this.name = name;
+        this.ui = ui;
+        this.storage = storage;
+
+        TaskList loadedTasks;
+        try {
+            loadedTasks = new TaskList(storage.load());
+        } catch (SappyException e) {
+            ui.printResponse("Warning: " + e.getMessage() + "\nStarting with an empty list.");
+            loadedTasks = new TaskList();
+        }
+        this.taskList = loadedTasks;
+    }
+
+    /**
      * Returns a formatted string listing all current tasks.
      *
      * @return String representation of the task list.
