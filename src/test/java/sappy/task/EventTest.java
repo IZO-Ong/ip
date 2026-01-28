@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import sappy.ChatBot;
+import sappy.logic.ChatBot;
 import sappy.storage.StorageStub;
 
 public class EventTest {

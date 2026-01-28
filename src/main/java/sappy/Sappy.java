@@ -1,5 +1,7 @@
 package sappy;
 
+import sappy.logic.ChatBot;
+
 /**
  * The logic engine of the Sappy chatbot.
  */
@@ -12,8 +14,6 @@ public class Sappy {
      * Initializes a new instance of the Sappy logic engine.
      */
     public Sappy() {
-        // If ChatBot still needs a Ui object for internal logic,
-        // you can pass a 'new Ui()' or refactor ChatBot to be UI-agnostic.
         this.chatbot = new ChatBot(botName, filePath);
     }
 

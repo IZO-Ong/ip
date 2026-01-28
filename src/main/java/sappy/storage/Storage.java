@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import sappy.SappyException;
+import sappy.logic.SappyException;
 import sappy.task.Deadline;
 import sappy.task.Event;
 import sappy.task.Task;

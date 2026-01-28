@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-import sappy.SappyException;
+import sappy.logic.SappyException;
 
 public class TaskListTest {
     @Test

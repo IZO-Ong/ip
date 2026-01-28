@@ -2,7 +2,7 @@ package sappy.task;
 
 import java.util.ArrayList;
 
-import sappy.SappyException;
+import sappy.logic.SappyException;
 
 /**
  * Manages a collection of tasks.

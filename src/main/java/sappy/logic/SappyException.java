@@ -1,4 +1,4 @@
-package sappy;
+package sappy.logic;
 
 /**
  * Represents a custom exception specific to the Sappy chatbot application.

@@ -1,4 +1,4 @@
-package sappy;
+package sappy.logic;
 
 import sappy.command.Command;
 import sappy.parser.Parser;
