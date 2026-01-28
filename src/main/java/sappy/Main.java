@@ -84,10 +84,10 @@ public class Main extends Application {
      */
     private void handleUserInput() {
         String userText = userInput.getText();
-        String sappyText = sappy.getResponse(userInput.getText());
+        String dukeText = sappy.getResponse(userInput.getText());
         dialogContainer.getChildren().addAll(
-                new DialogBox(userText, userImage),
-                new DialogBox(sappyText, sappyImage)
+                DialogBox.getUserDialog(userText, userImage),
+                DialogBox.getSappyDialog(dukeText, sappyImage)
         );
         userInput.clear();
     }
