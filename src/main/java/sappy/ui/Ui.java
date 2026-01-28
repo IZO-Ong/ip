@@ -17,7 +17,7 @@ public class Ui {
     public Ui() {
         this.scanner = new Scanner(System.in);
     }
-    
+
     private void showLine() {
         String line = "____________________________________________________________";
         System.out.println(indent + line);
@@ -51,3 +51,4 @@ public class Ui {
         showLine();
     }
 }
+
