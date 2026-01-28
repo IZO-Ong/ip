@@ -1,11 +1,13 @@
 package sappy;
 
-import org.junit.jupiter.api.Test;
-import sappy.storage.StorageStub;
-import sappy.ui.Ui;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
+
+import sappy.storage.StorageStub;
+import sappy.ui.Ui;
 
 public class ChatBotTest {
     private final Ui ui = new Ui();

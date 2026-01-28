@@ -1,11 +1,13 @@
 package sappy.task;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Test;
+
 import sappy.ChatBot;
 import sappy.storage.StorageStub;
 import sappy.ui.Ui;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DeadlineTest {
     private final Ui ui = new Ui();
