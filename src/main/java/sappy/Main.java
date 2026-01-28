@@ -10,6 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import sappy.gui.DialogBox;
 
 /**
  * A GUI for Sappy using JavaFX.

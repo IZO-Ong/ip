@@ -7,11 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import sappy.ChatBot;
 import sappy.storage.StorageStub;
-import sappy.ui.Ui;
 
 public class DeadlineTest {
-    private final Ui ui = new Ui();
-
     private ChatBot createBot() {
         return new ChatBot("Sappy", new StorageStub());
     }
