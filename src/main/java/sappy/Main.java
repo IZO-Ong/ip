@@ -25,6 +25,9 @@ public class Main extends Application {
             stage.setScene(scene);
             stage.setTitle("Sappy Chatbot");
 
+            stage.setMinHeight(220);
+            stage.setMinWidth(417);
+
             fxmlLoader.<MainWindow>getController().setSappy(sappy);
 
             stage.show();
