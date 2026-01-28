@@ -8,7 +8,6 @@ import sappy.task.Event;
 import sappy.task.Task;
 import sappy.task.TaskList;
 import sappy.task.ToDo;
-import sappy.ui.Ui;
 
 /**
  * Encapsulates the main logic of Sappy chatbot.
@@ -18,7 +17,6 @@ public class ChatBot {
     private final TaskList taskList;
     private final String name;
     private final Storage storage;
-    private final Ui ui;
 
     /**
      * Initialises a new ChatBot instance.
@@ -26,18 +24,16 @@ public class ChatBot {
      *
      * @param name Name of the chatbot.
      * @param filePath Path to the file where tasks are stored.
-     * @param ui The user interface component for displaying messages.
      */
-    public ChatBot(String name, String filePath, Ui ui) {
+    public ChatBot(String name, String filePath) {
         this.name = name;
-        this.ui = ui;
         this.storage = new Storage(filePath);
 
         TaskList loadedTasks;
         try {
             loadedTasks = new TaskList(storage.load());
         } catch (SappyException e) {
-            ui.printResponse("Warning: " + e.getMessage() + "\nStarting with an empty list.");
+            System.out.println("Warning: " + e.getMessage() + "\nStarting with an empty list.");
             loadedTasks = new TaskList();
         }
         this.taskList = loadedTasks;
@@ -49,18 +45,16 @@ public class ChatBot {
      *
      * @param name Name of the chatbot.
      * @param storage The storage component to use.
-     * @param ui The user interface component for displaying messages.
      */
-    public ChatBot(String name, Storage storage, Ui ui) {
+    public ChatBot(String name, Storage storage) {
         this.name = name;
-        this.ui = ui;
         this.storage = storage;
 
         TaskList loadedTasks;
         try {
             loadedTasks = new TaskList(storage.load());
         } catch (SappyException e) {
-            ui.printResponse("Warning: " + e.getMessage() + "\nStarting with an empty list.");
+            System.out.println("Warning: " + e.getMessage() + "\nStarting with an empty list.");
             loadedTasks = new TaskList();
         }
         this.taskList = loadedTasks;
@@ -146,7 +140,7 @@ public class ChatBot {
         try {
             storage.save(taskList.getAllTasks());
         } catch (java.io.IOException e) {
-            ui.printResponse("Error: Could not save task: " + e.getMessage());
+            System.err.println("Error: Could not save task: " + e.getMessage());
         }
     }
 
@@ -201,22 +195,18 @@ public class ChatBot {
      * @param keyword The string to search for within task descriptions.
      * @return A formatted list of matching tasks.
      */
-    public String findTasks(String keyword) {
+    public String findTasks(String keyword) throws SappyException {
         StringBuilder output = new StringBuilder();
         int count = 1;
 
         for (int i = 0; i < taskList.getSize(); i++) {
-            try {
-                Task task = taskList.get(i);
-                if (task.toString().contains(keyword)) {
-                    if (count > 1) {
-                        output.append("\n");
-                    }
-                    output.append(count).append(".").append(task);
-                    count++;
+            Task task = taskList.get(i);
+            if (task.toString().contains(keyword)) {
+                if (count > 1) {
+                    output.append("\n");
                 }
-            } catch (SappyException ignored) {
-                // index validation is handled by TaskList
+                output.append(count).append(".").append(task);
+                count++;
             }
         }
 

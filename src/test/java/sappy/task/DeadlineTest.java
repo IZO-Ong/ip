@@ -13,7 +13,7 @@ public class DeadlineTest {
     private final Ui ui = new Ui();
 
     private ChatBot createBot() {
-        return new ChatBot("Sappy", new StorageStub(), ui);
+        return new ChatBot("Sappy", new StorageStub());
     }
 
     @Test
