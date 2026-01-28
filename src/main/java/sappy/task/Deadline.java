@@ -1,9 +1,10 @@
 package sappy.task;
 
-import sappy.SappyException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+
+import sappy.SappyException;
 
 /**
  * Represents a task that must be completed by a specific date.

@@ -1,15 +1,14 @@
 package sappy;
 
 import sappy.command.Command;
+import sappy.parser.Parser;
 import sappy.storage.Storage;
-import sappy.task.TaskList;
-import sappy.task.Task;
-import sappy.task.ToDo;
 import sappy.task.Deadline;
 import sappy.task.Event;
-import sappy.parser.Parser;
+import sappy.task.Task;
+import sappy.task.TaskList;
+import sappy.task.ToDo;
 import sappy.ui.Ui;
-import java.lang.StringBuilder;
 
 /**
  * Encapsulates the main logic of Sappy chatbot.
@@ -72,14 +71,14 @@ public class ChatBot {
      *
      * @return String representation of the task list.
      */
-    public String listTasks() {
+    public String listTasks() throws SappyException {
         StringBuilder output = new StringBuilder();
         output.append("Here are the tasks in your list:\n");
         for (int i = 0; i < taskList.getSize(); i++) {
-            try {
-                if (i > 0) output.append("\n");
-                output.append(i + 1).append(". ").append(taskList.get(i).toString());
-            } catch (SappyException ignored) {}
+            if (i > 0) {
+                output.append("\n");
+            }
+            output.append(i + 1).append(". ").append(taskList.get(i).toString());
         }
         return output.toString();
     }
@@ -152,8 +151,8 @@ public class ChatBot {
     }
 
     private String getSuccessMessage(Task t) {
-        return "I've added this task:\n  " + t.toString() +
-                "\nNow you have " + taskList.getSize() + " task(s) in the list.";
+        return "I've added this task:\n  " + t.toString()
+                + "\nNow you have " + taskList.getSize() + " task(s) in the list.";
     }
 
     /**
@@ -213,7 +212,7 @@ public class ChatBot {
                     if (count > 1) {
                         output.append("\n");
                     }
-                    output.append(count).append(".").append(task.toString());
+                    output.append(count).append(".").append(task);
                     count++;
                 }
             } catch (SappyException ignored) {
@@ -225,7 +224,7 @@ public class ChatBot {
             return "No matching tasks found in your list.";
         }
 
-        return "Here are the matching tasks in your list:\n" + output.toString();
+        return "Here are the matching tasks in your list:\n" + output;
     }
 
     /**

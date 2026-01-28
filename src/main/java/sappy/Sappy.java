@@ -1,7 +1,7 @@
 package sappy;
 
-import sappy.ui.Ui;
 import sappy.command.Command;
+import sappy.ui.Ui;
 
 /**
  * Acts as the entry point for the Sappy chatbot application.

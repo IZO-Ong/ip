@@ -1,17 +1,17 @@
 package sappy.storage;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 import sappy.SappyException;
 import sappy.task.Deadline;
 import sappy.task.Event;
 import sappy.task.Task;
 import sappy.task.ToDo;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Scanner;
-import java.util.ArrayList;
 
 /**
  * Handles the loading and saving of task data to a local file.
@@ -110,7 +110,11 @@ public class Storage {
         try (Scanner s = new Scanner(f)) {
             while (s.hasNext()) {
                 String line = s.nextLine();
-                if (line.trim().isEmpty()) continue;
+
+                if (line.trim().isEmpty()) {
+                    continue;
+                }
+
                 loadedTasks.add(parseLineToTask(line));
             }
         } catch (FileNotFoundException e) {
