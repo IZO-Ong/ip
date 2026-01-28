@@ -1,5 +1,6 @@
 package sappy;
 
+import sappy.command.Command;
 import sappy.logic.ChatBot;
 
 /**
@@ -26,5 +27,12 @@ public class Sappy {
      */
     public String getResponse(String input) {
         return chatbot.getResponse(input);
+    }
+
+    /**
+     * Returns the last command typed by the user.
+     */
+    public Command getLatestCommand() {
+        return chatbot.getLastCommand();
     }
 }

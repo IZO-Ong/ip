@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import sappy.command.Command;
 
 /**
  * An immutable custom control using {@code HBox} to represent a dialog box in the GUI.
@@ -66,16 +67,44 @@ public class DialogBox extends HBox {
     }
 
     /**
+     * Changes the style of the dialog bubble based on the command type.
+     */
+    private void changeDialogStyle(Command commandType) {
+        switch (commandType) {
+        case TODO:
+            //fallthrough
+        case DEADLINE:
+            //fallthrough
+        case EVENT:
+            dialog.getStyleClass().add("add-label");
+            break;
+        case MARK:
+            //fallthrough
+        case UNMARK:
+            dialog.getStyleClass().add("marked-label");
+            break;
+        case REMOVE:
+            dialog.getStyleClass().add("delete-label");
+            break;
+        default:
+            // Default style
+            break;
+        }
+    }
+
+    /**
      * Factory method to create a dialog box for Sappy (the bot).
      * The resulting box is flipped so that it is aligned to the left.
      *
      * @param text The bot's response text.
      * @param img The bot's profile image.
+     * @param commandType The last enum type of command input by the user.
      * @return A {@code DialogBox} configured for the bot.
      */
-    public static DialogBox getSappyDialog(String text, Image img) {
+    public static DialogBox getSappyDialog(String text, Image img, Command commandType) {
         var db = new DialogBox(text, img);
         db.flip();
+        db.changeDialogStyle(commandType);
         return db;
     }
 }

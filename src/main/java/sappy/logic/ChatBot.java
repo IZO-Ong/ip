@@ -17,6 +17,7 @@ public class ChatBot {
     private final TaskList taskList;
     private final String name;
     private final Storage storage;
+    private Command lastCommand;
 
     /**
      * Initialises a new ChatBot instance.
@@ -218,6 +219,13 @@ public class ChatBot {
     }
 
     /**
+     * Returns the type of the last executed command.
+     */
+    public Command getLastCommand() {
+        return lastCommand;
+    }
+
+    /**
      * Processes user input and returns the appropriate response string.
      *
      * @param input The raw user command string.
@@ -226,6 +234,7 @@ public class ChatBot {
     public String getResponse(String input) {
         try {
             Command cmd = Command.fromString(input);
+            this.lastCommand = cmd;
 
             if (cmd.isExit()) {
                 return "Bye! " + this.name + " will be very lonely until you come back!";

@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import sappy.Sappy;
+import sappy.command.Command;
 
 /**
  * Controller for the main GUI.
@@ -45,9 +46,11 @@ public class MainWindow extends AnchorPane {
     private void handleUserInput() {
         String input = userInput.getText();
         String response = sappy.getResponse(input);
+        Command commandType = sappy.getLatestCommand();
+
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getSappyDialog(response, sappyImage)
+                DialogBox.getSappyDialog(response, sappyImage, commandType)
         );
         userInput.clear();
     }
