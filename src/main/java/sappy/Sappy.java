@@ -1,56 +1,38 @@
 package sappy;
 
 import sappy.command.Command;
-import sappy.ui.Ui;
+import sappy.logic.ChatBot;
 
 /**
- * Acts as the entry point for the Sappy chatbot application.
- * Initializes the required components and manages the main execution loop.
+ * The logic engine of the Sappy chatbot.
  */
 public class Sappy {
     private final String botName = "Sappy";
     private final String filePath = "./data/sappy.txt";
-
-    private final Ui ui;
     private final ChatBot chatbot;
 
     /**
-     * Initializes a new instance of the Sappy application.
-     * Sets up the user interface and the core chatbot logic.
+     * Initializes a new instance of the Sappy logic engine.
      */
     public Sappy() {
-        this.ui = new Ui();
-        this.chatbot = new ChatBot(botName, filePath, ui);
+        this.chatbot = new ChatBot(botName, filePath);
     }
 
     /**
-     * Starts the main execution loop of the chatbot.
-     * Continuously reads user commands and provides responses until an exit command is received.
+     * Generates a response for the user's chat message.
+     * This is the primary entry point for the GUI to interact with the chatbot logic.
+     *
+     * @param input The raw user input from the GUI text field.
+     * @return Sappy's processed response as a String.
      */
-    public void run() {
-        ui.startUp(botName);
-
-        boolean running = true;
-
-        while (running) {
-            String userInput = ui.readCommand();
-            Command cmd = Command.fromString(userInput);
-
-            if (cmd.isExit()) {
-                running = false;
-            }
-
-            String response = chatbot.getResponse(userInput);
-            ui.printResponse(response);
-        }
+    public String getResponse(String input) {
+        return chatbot.getResponse(input);
     }
 
     /**
-     * Main entry point of the program.
-     * Creates an instance of Sappy and begins its execution.
-     * @param args Command line arguments (not used).
+     * Returns the last command typed by the user.
      */
-    public static void main(String[] args) {
-        new Sappy().run();
+    public Command getLatestCommand() {
+        return chatbot.getLastCommand();
     }
 }

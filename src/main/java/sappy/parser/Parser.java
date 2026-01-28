@@ -1,6 +1,6 @@
 package sappy.parser;
 
-import sappy.SappyException;
+import sappy.logic.SappyException;
 
 /**
  * Handles the parsing of user input strings into data.

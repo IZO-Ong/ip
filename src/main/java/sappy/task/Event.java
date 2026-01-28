@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-import sappy.SappyException;
+import sappy.logic.SappyException;
 
 /**
  * Represents a task that occurs within a specific time range.
