@@ -187,7 +187,7 @@ public class ChatBot {
         Task removed = taskList.remove(taskId - 1);
         autoSave();
         return "I've removed this task:\n" + removed.toString()
-                + "\nNow you have " + taskList.getSize() + " tasks in the list.";
+                + "\nNow you have " + taskList.getSize() + " task(s) in the list.";
     }
 
     /**
