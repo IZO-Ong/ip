@@ -76,4 +76,37 @@ public abstract class Task {
     public String toString() {
         return getTypeIcon() + getCheckboxIcon() + " " + description;
     }
+
+    /**
+     * Compares this task with another object for equality.
+     * Two tasks are considered equal if they have the same class type and
+     * an identical, case-sensitive description.
+     *
+     * @param obj The object to compare with this task.
+     * @return true if the given object is a Task of the same type with the
+     *      same description; false otherwise.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Task other = (Task) obj;
+        return description.equals(other.description);
+    }
+
+    /**
+     * Returns a hash code value for this task.
+     * The hash code is generated based on the task description to remain
+     * consistent with {@link #equals(Object)}.
+     *
+     * @return A hash code value for this task.
+     */
+    @Override
+    public int hashCode() {
+        return description.hashCode();
+    }
 }
