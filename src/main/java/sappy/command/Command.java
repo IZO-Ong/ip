@@ -6,36 +6,16 @@ package sappy.command;
  * the application to exit.
  */
 public enum Command {
-    BYE(true),
-    LIST(false),
-    MARK(false),
-    UNMARK(false),
-    TODO(false),
-    DEADLINE(false),
-    EVENT(false),
-    REMOVE(false),
-    FIND(false),
-    UNKNOWN(false);
-
-    private final boolean isExit;
-
-    /**
-     * Constructs a Command with the specified exit status.
-     *
-     * @param isExit True if the command terminates the program, false otherwise.
-     */
-    Command(boolean isExit) {
-        this.isExit = isExit;
-    }
-
-    /**
-     * Returns whether this command is an exit command.
-     *
-     * @return True if the application should terminate, false otherwise.
-     */
-    public boolean isExit() {
-        return this.isExit;
-    }
+    BYE,
+    LIST,
+    MARK,
+    UNMARK,
+    TODO,
+    DEADLINE,
+    EVENT,
+    REMOVE,
+    FIND,
+    UNKNOWN;
 
     /**
      * Parses a raw string input to determine the corresponding Command.

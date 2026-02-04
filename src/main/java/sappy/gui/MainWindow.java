@@ -48,6 +48,12 @@ public class MainWindow extends AnchorPane {
     @FXML
     private void handleUserInput() {
         String input = userInput.getText();
+
+        if (input.trim().isEmpty()) {
+            userInput.clear();
+            return;
+        }
+
         String response = sappy.getResponse(input);
         Command commandType = sappy.getLatestCommand();
 
@@ -57,7 +63,7 @@ public class MainWindow extends AnchorPane {
         );
         userInput.clear();
 
-        if (commandType.isExit()) {
+        if (commandType == Command.BYE) {
             // 3 second delay
             PauseTransition delay = new PauseTransition(Duration.seconds(2));
             delay.setOnFinished(event -> Platform.exit());
