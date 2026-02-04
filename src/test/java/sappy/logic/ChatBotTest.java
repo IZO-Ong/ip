@@ -80,4 +80,26 @@ public class ChatBotTest {
         String response = bot.getResponse("mark 1");
         assertEquals("Sappy got an error! That task does not exist!", response);
     }
+
+    @Test
+    public void listTasks_emptyList_returnsEmptyMessage() {
+        ChatBot bot = createBot();
+        String response = bot.getResponse("list");
+        assertEquals("Your task list is currently empty!", response);
+    }
+
+    @Test
+    public void listTasks_twoItems_returnsFormattedList() {
+        ChatBot bot = createBot();
+        bot.getResponse("todo read book");
+        bot.getResponse("todo buy bread");
+
+        String response = bot.getResponse("list");
+
+        String expected = "Here are the tasks in your list:\n"
+                + "1. [T][ ] read book\n"
+                + "2. [T][ ] buy bread";
+
+        assertEquals(expected, response);
+    }
 }
