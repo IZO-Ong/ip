@@ -28,14 +28,14 @@ public class Parser {
     }
 
     /**
-     * Extracts a non-empty description from a command string starting from a given offset.
+     * Parses todo input to extract description.
      *
      * @param input The raw user input string.
      * @param offset The starting index where the description is expected to begin.
      * @return The trimmed description string.
      * @throws SappyException If the resulting description is empty.
      */
-    public static String parseDescription(String input, int offset) throws SappyException {
+    public static String parseToDoDetails(String input, int offset) throws SappyException {
         assert offset >= 0 : "Offset cannot be negative";
         assert offset <= input.length() : "Offset " + offset + " is out of bounds for input: " + input;
 
@@ -44,6 +44,54 @@ public class Parser {
             throw new SappyException("The description cannot be empty.");
         }
         return description;
+    }
+
+    /**
+     * Parses deadline input to extract description and date.
+     * @param input Raw user input.
+     * @param offset Starting index after the command word.
+     * @return String array where [0] is description and [1] is date.
+     * @throws SappyException If /by is missing or parts are empty.
+     */
+    public static String[] parseDeadlineDetails(String input, int offset) throws SappyException {
+        assert input != null : "Input string cannot be null";
+        assert offset >= 0 : "Offset cannot be negative";
+        assert offset <= input.length() : "Offset " + offset + " is out of bounds for input: " + input;
+        String content = input.substring(offset).trim();
+
+        if (!content.contains("/by")) {
+            throw new SappyException("A deadline must have a /by date.");
+        }
+
+        String[] parts = content.split(" /by ");
+        if (parts.length < 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
+            throw new SappyException("A description and date are required for a deadline.");
+        }
+        return parts;
+    }
+
+    /**
+     * Parses event input to extract description, start date, and end date.
+     * @param input Raw user input.
+     * @param offset Starting index after the command word.
+     * @return String array where [0] is description, [1] is from, and [2] is to.
+     * @throws SappyException If /from or /to is missing or parts are empty.
+     */
+    public static String[] parseEventDetails(String input, int offset) throws SappyException {
+        assert input != null : "Input string cannot be null";
+        assert offset >= 0 : "Offset cannot be negative";
+        assert offset <= input.length() : "Offset " + offset + " is out of bounds for input: " + input;
+        String content = input.substring(offset).trim();
+
+        if (!content.contains("/from") || !content.contains("/to")) {
+            throw new SappyException("An event must have a /from and /to date.");
+        }
+
+        String[] parts = content.split(" /from | /to ");
+        if (parts.length < 3 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty() || parts[2].trim().isEmpty()) {
+            throw new SappyException("A description, from date, and to date are required for an event.");
+        }
+        return parts;
     }
 
     /**

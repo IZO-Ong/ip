@@ -1,5 +1,6 @@
 package sappy.logic;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import sappy.command.Command;
@@ -96,40 +97,26 @@ public class ChatBot {
     }
 
     /**
-     * Adds a new Deadline task to the list.
+     * Adds a new Deadline task using parsed details.
      *
-     * @param input The raw input containing description and /by date.
-     * @return Success message containing the added task.
-     * @throws SappyException If format is invalid or parts are missing.
+     * @param details Array where [0] is description and [1] is the /by date.
+     * @return Success message.
      */
-    public String addDeadline(String input) throws SappyException {
-        if (!input.contains("/by")) {
-            throw new SappyException("A deadline must have a /by date.");
-        }
-        String[] parts = input.split(" /by ");
-        if (parts.length < 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
-            throw new SappyException("A description and date of a deadline are required.");
-        }
-        Task t = new Deadline(parts[0], parts[1]);
+    public String addDeadline(String[] details) throws SappyException {
+        assert details.length >= 2 : "Deadline details must contain description and date";
+        Task t = new Deadline(details[0], details[1]);
         return addTask(t);
     }
 
     /**
-     * Adds a new Event task to the list.
+     * Adds a new Event task using parsed details.
      *
-     * @param input The raw input containing description, /from, and /to dates.
-     * @return Success message containing the added task.
-     * @throws SappyException If format is invalid or dates are missing.
+     * @param details Array where [0] is description, [1] is /from, and [2] is /to.
+     * @return Success message.
      */
-    public String addEvent(String input) throws SappyException {
-        if (!input.contains("/from") || !input.contains("/to")) {
-            throw new SappyException("An Event must have a /from date and /to date.");
-        }
-        String[] parts = input.split(" /from | /to ");
-        if (parts.length < 3 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty() || parts[2].trim().isEmpty()) {
-            throw new SappyException("A description, from and to date of an event is required.");
-        }
-        Task t = new Event(parts[0], parts[1], parts[2]);
+    public String addEvent(String[] details) throws SappyException {
+        assert details.length >= 3 : "Event details must contain description, from, and to dates";
+        Task t = new Event(details[0], details[1], details[2]);
         return addTask(t);
     }
 
@@ -209,25 +196,25 @@ public class ChatBot {
      * @return A formatted list of matching tasks.
      */
     public String findTasks(String keyword) throws SappyException {
-        StringBuilder output = new StringBuilder();
-        int count = 1;
-
+        ArrayList<Task> matchingTasks = new ArrayList<>();
         for (int i = 0; i < taskList.getSize(); i++) {
-            Task task = taskList.get(i);
-            if (task.toString().contains(keyword)) {
-                if (count > 1) {
-                    output.append("\n");
-                }
-                output.append(count).append(".").append(task);
-                count++;
+            if (taskList.get(i).toString().contains(keyword)) {
+                matchingTasks.add(taskList.get(i));
             }
         }
 
-        if (count == 1) {
+        if (matchingTasks.isEmpty()) {
             return "No matching tasks found in your list.";
         }
 
-        return "Here are the matching tasks in your list:\n" + output;
+        StringBuilder output = new StringBuilder("Here are the matching tasks:\n");
+        for (int i = 0; i < matchingTasks.size(); i++) {
+            output.append(i + 1).append(".").append(matchingTasks.get(i));
+            if (i < matchingTasks.size() - 1) {
+                output.append("\n");
+            }
+        }
+        return output.toString();
     }
 
     /**
@@ -250,27 +237,28 @@ public class ChatBot {
             Command cmd = Command.fromString(input);
             this.lastCommand = cmd;
 
-            if (cmd.isExit()) {
-                return "Bye! " + this.name + " will be very lonely until you come back!";
-            }
+            String commandWord = input.trim().split(" ")[0];
+            int offset = commandWord.length() + 1;
 
             switch (cmd) {
+            case BYE:
+                return "Bye! " + this.name + " will be very lonely until you come back!";
             case LIST:
                 return listTasks();
             case MARK:
-                return markTaskDone(Parser.parseId(input, 5));
+                return markTaskDone(Parser.parseId(input, offset));
             case UNMARK:
-                return markTaskUndone(Parser.parseId(input, 7));
+                return markTaskUndone(Parser.parseId(input, offset));
             case REMOVE:
-                return removeTask(Parser.parseId(input, 7));
+                return removeTask(Parser.parseId(input, offset));
             case FIND:
-                return findTasks(Parser.parseKeyword(input, 5));
+                return findTasks(Parser.parseKeyword(input, offset));
             case TODO:
-                return addToDo(Parser.parseDescription(input, 5));
+                return addToDo(Parser.parseToDoDetails(input, offset));
             case DEADLINE:
-                return addDeadline(input.substring(9));
+                return addDeadline(Parser.parseDeadlineDetails(input, offset));
             case EVENT:
-                return addEvent(input.substring(6));
+                return addEvent(Parser.parseEventDetails(input, offset));
             default:
                 return "I'm sorry, I don't know what that means.";
             }
