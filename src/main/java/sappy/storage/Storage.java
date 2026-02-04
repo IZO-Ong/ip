@@ -26,6 +26,8 @@ public class Storage {
      * @param filePath The path to the file where task data is stored.
      */
     public Storage(String filePath) {
+        assert filePath != null : "File path cannot be null";
+        assert !filePath.trim().isEmpty() : "File path cannot be empty";
         this.filePath = filePath;
     }
 
@@ -42,6 +44,8 @@ public class Storage {
         if (f.getParentFile() != null && !f.getParentFile().exists()) {
             f.getParentFile().mkdirs();
         }
+
+        assert f.getParentFile().exists() : "Directory should exist after mkdirs()";
 
         try (FileWriter fw = new FileWriter(f)) {
             for (Task t : tasks) {
@@ -65,8 +69,14 @@ public class Storage {
         }
 
         String type = parts[0];
-        boolean isDone = parts[1].equals("1");
+        String status = parts[1];
         String description = parts[2];
+
+        if (!status.equals("1") && !status.equals("0")) {
+            throw new SappyException("Corrupted task found: Invalid completion status '" + status + "'.");
+        }
+
+        boolean isDone = status.equals("1");
 
         Task task;
 
@@ -75,9 +85,15 @@ public class Storage {
             task = new ToDo(description);
             break;
         case "[D]":
+            if (parts.length < 4) {
+                throw new SappyException("Corrupted Deadline: Missing /by date.");
+            }
             task = new Deadline(description, parts[3]);
             break;
         case "[E]":
+            if (parts.length < 5) {
+                throw new SappyException("Corrupted Event: Missing /from or /to dates.");
+            }
             task = new Event(description, parts[3], parts[4]);
             break;
         default:

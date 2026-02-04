@@ -17,6 +17,9 @@ public class Parser {
      * @throws SappyException If the input is malformed or the ID is not a valid integer.
      */
     public static int parseId(String input, int offset) throws SappyException {
+        assert offset >= 0 : "Offset cannot be negative";
+        assert offset <= input.length() : "Offset " + offset + " is out of bounds for input: " + input;
+
         try {
             return Integer.parseInt(input.substring(offset).trim());
         } catch (NumberFormatException | StringIndexOutOfBoundsException e) {
@@ -33,6 +36,9 @@ public class Parser {
      * @throws SappyException If the resulting description is empty.
      */
     public static String parseToDoDetails(String input, int offset) throws SappyException {
+        assert offset >= 0 : "Offset cannot be negative";
+        assert offset <= input.length() : "Offset " + offset + " is out of bounds for input: " + input;
+
         String description = input.substring(offset).trim();
         if (description.isEmpty()) {
             throw new SappyException("The description cannot be empty.");
@@ -49,6 +55,8 @@ public class Parser {
      */
     public static String[] parseDeadlineDetails(String input, int offset) throws SappyException {
         assert input != null : "Input string cannot be null";
+        assert offset >= 0 : "Offset cannot be negative";
+        assert offset <= input.length() : "Offset " + offset + " is out of bounds for input: " + input;
         String content = input.substring(offset).trim();
 
         if (!content.contains("/by")) {
@@ -71,6 +79,8 @@ public class Parser {
      */
     public static String[] parseEventDetails(String input, int offset) throws SappyException {
         assert input != null : "Input string cannot be null";
+        assert offset >= 0 : "Offset cannot be negative";
+        assert offset <= input.length() : "Offset " + offset + " is out of bounds for input: " + input;
         String content = input.substring(offset).trim();
 
         if (!content.contains("/from") || !content.contains("/to")) {
@@ -93,6 +103,9 @@ public class Parser {
      * @throws SappyException If the keyword is empty.
      */
     public static String parseKeyword(String input, int offset) throws SappyException {
+        assert offset >= 0 : "Offset cannot be negative";
+        assert offset <= input.length() : "Offset " + offset + " is out of bounds for input: " + input;
+
         String keyword = input.substring(offset).trim();
         if (keyword.isEmpty()) {
             throw new SappyException("The search keyword cannot be empty.");
