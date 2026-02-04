@@ -57,7 +57,7 @@ public class MainWindow extends AnchorPane {
         );
         userInput.clear();
 
-        if (commandType.isExit()) {
+        if (commandType == Command.BYE) {
             // 3 second delay
             PauseTransition delay = new PauseTransition(Duration.seconds(2));
             delay.setOnFinished(event -> Platform.exit());
