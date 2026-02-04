@@ -1,7 +1,9 @@
 package sappy.logic;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import sappy.command.Command;
 import sappy.parser.Parser;
@@ -69,16 +71,18 @@ public class ChatBot {
      *
      * @return String representation of the task list.
      */
-    public String listTasks() throws SappyException {
-        StringBuilder output = new StringBuilder();
-        output.append("Here are the tasks in your list:\n");
-        for (int i = 0; i < taskList.getSize(); i++) {
-            if (i > 0) {
-                output.append("\n");
-            }
-            output.append(i + 1).append(". ").append(taskList.get(i).toString());
+    public String listTasks() {
+        List<Task> tasks = taskList.getAllTasks();
+
+        if (tasks.isEmpty()) {
+            return "Your task list is currently empty!";
         }
-        return output.toString();
+
+        String formattedTasks = IntStream.range(0, tasks.size())
+                .mapToObj(i -> (i + 1) + ". " + tasks.get(i).toString())
+                .collect(Collectors.joining("\n"));
+
+        return "Here are the tasks in your list:\n" + formattedTasks;
     }
 
     /**
@@ -196,25 +200,19 @@ public class ChatBot {
      * @return A formatted list of matching tasks.
      */
     public String findTasks(String keyword) throws SappyException {
-        ArrayList<Task> matchingTasks = new ArrayList<>();
-        for (int i = 0; i < taskList.getSize(); i++) {
-            if (taskList.get(i).toString().contains(keyword)) {
-                matchingTasks.add(taskList.get(i));
-            }
-        }
+        List<Task> matchingTasks = taskList.getAllTasks().stream()
+                .filter(task -> task.toString().contains(keyword))
+                .toList();
 
         if (matchingTasks.isEmpty()) {
             return "No matching tasks found in your list.";
         }
 
-        StringBuilder output = new StringBuilder("Here are the matching tasks:\n");
-        for (int i = 0; i < matchingTasks.size(); i++) {
-            output.append(i + 1).append(".").append(matchingTasks.get(i));
-            if (i < matchingTasks.size() - 1) {
-                output.append("\n");
-            }
-        }
-        return output.toString();
+        String formattedTasks = IntStream.range(0, matchingTasks.size())
+                .mapToObj(i -> (i + 1) + "." + matchingTasks.get(i))
+                .collect(Collectors.joining("\n"));
+
+        return "Here are the matching tasks in your list:\n" + formattedTasks;
     }
 
     /**
