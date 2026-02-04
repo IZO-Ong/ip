@@ -22,6 +22,13 @@ public class EventTest {
     }
 
     @Test
+    public void getResponse_endDateBeforeStartDate_returnsLogicError() {
+        ChatBot bot = createBot();
+        String response = bot.getResponse("event party /from 2026-12-25 /to 2026-01-01");
+        assertEquals("Sappy got an error! End date cannot be earlier than the start date!", response);
+    }
+
+    @Test
     public void getResponse_validEventDates_success() {
         ChatBot bot = createBot();
         String response = bot.getResponse("event career fair /from 2026-02-10 /to 2026-02-12");

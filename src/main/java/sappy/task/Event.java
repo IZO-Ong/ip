@@ -19,13 +19,18 @@ public class Event extends Task {
      * @param description The description of the event.
      * @param startStr The start date in yyyy-mm-dd format.
      * @param endStr The end date in yyyy-mm-dd format.
-     * @throws SappyException If any date format is invalid.
+     * @throws SappyException If any date format is invalid or if end date is earlier than start date.
      */
     public Event(String description, String startStr, String endStr) throws SappyException {
         super(description);
         try {
             this.startDate = LocalDate.parse(startStr.trim());
             this.endDate = LocalDate.parse(endStr.trim());
+
+            if (this.endDate.isBefore(this.startDate)) {
+                throw new SappyException("End date cannot be earlier than the start date!");
+            }
+
         } catch (DateTimeParseException e) {
             throw new SappyException("Please provide dates in yyyy-mm-dd format.");
         }
