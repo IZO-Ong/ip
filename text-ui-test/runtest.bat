@@ -7,7 +7,7 @@ REM delete output from previous run
 if exist ACTUAL.TXT del ACTUAL.TXT
 
 REM compile the code into the bin folder
-javac -cp ..\src\main\java -Xlint:none -d ..\bin ..\src\main\java\sappy\*.java ..\src\main\java\sappy\task\*.java ..\src\main\java\sappy\ui\*.java ..\src\main\java\sappy\storage\*.java ..\src\main\java\sappy\parser\*.java ..\src\main\java\sappy\command\*.java
+javac -cp ..\src\main\java -Xlint:none -d ..\bin ..\src\main\java\sappy\*.java ..\src\main\java\sappy\task\*.java ..\src\main\java\sappy\gui\*.java ..\src\main\java\sappy\storage\*.java ..\src\main\java\sappy\parser\*.java ..\src\main\java\sappy\command\*.java
 
 IF ERRORLEVEL 1 (
     echo ********** BUILD FAILURE **********
