@@ -124,9 +124,13 @@ public class ChatBot {
         return addTask(t);
     }
 
-    private String addTask(Task t) {
+    private String addTask(Task t) throws SappyException {
         assert t != null : "Cannot add a null task";
         int oldSize = taskList.getSize();
+
+        if (taskList.contains(t)) {
+            throw new SappyException("This task already exists in your list!");
+        }
 
         taskList.add(t);
 

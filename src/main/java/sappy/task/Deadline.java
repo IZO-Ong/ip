@@ -53,4 +53,21 @@ public class Deadline extends Task {
     public String toFileFormat() {
         return super.toFileFormat() + " | " + endDate;
     }
+
+    /**
+     * Compares this Deadline with another object for equality.
+     * Two Deadlines are equal if they share the same description and the
+     * same endDate.
+     *
+     * @param obj The object to compare with this Deadline.
+     * @return true if object is a Deadline with matching description and due date.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        Deadline other = (Deadline) obj;
+        return endDate.equals(other.endDate);
+    }
 }

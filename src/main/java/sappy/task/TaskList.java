@@ -91,15 +91,14 @@ public class TaskList {
     }
 
     /**
-     * Retrieves a task from the list at the specified index.
+     * Checks if a task already exists in the list.
      *
-     * @param index The 0-based index of the task.
-     * @return The task at the given index.
-     * @throws SappyException If the index is out of bounds.
+     * @param task The task to check for duplicates.
+     * @return True if an identical task exists, false otherwise.
      */
-    public Task get(int index) throws SappyException {
-        validateIndex(index);
-        return tasks.get(index);
+    public boolean contains(Task task) {
+        assert task != null : "Task to check cannot be null";
+        return this.getAllTasks().stream().anyMatch(t -> t.equals(task));
     }
 
     /**

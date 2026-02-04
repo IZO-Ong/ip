@@ -62,4 +62,21 @@ public class Event extends Task {
     public String toFileFormat() {
         return super.toFileFormat() + " | " + startDate + " | " + endDate;
     }
+
+    /**
+     * Compares this Event with another object for equality.
+     * Two Events are equal if they have the same description and identical
+     * startDate and endDate values.
+     *
+     * @param obj The object to compare with this Event.
+     * @return true if the object is an Event with matching description and time range.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        Event other = (Event) obj;
+        return startDate.equals(other.startDate) && endDate.equals(other.endDate);
+    }
 }
