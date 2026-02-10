@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import sappy.command.Command;
 import sappy.storage.StorageStub;
 import sappy.task.Deadline;
 import sappy.task.ToDo;
@@ -132,5 +133,88 @@ public class ChatBotTest {
 
         String response = bot.getResponse("todo read book");
         assertEquals("Sappy got an error! This task already exists in your list!", response);
+    }
+
+    @Test
+    public void getLastCommand_updatesCorrectly() {
+        ChatBot bot = createBot();
+
+        bot.getResponse("todo sleep");
+        assertEquals(Command.TODO, bot.getLastCommand());
+
+        bot.getResponse("list");
+        assertEquals(Command.LIST, bot.getLastCommand());
+
+        bot.getResponse("invalid command");
+        assertNotEquals(Command.LIST, bot.getLastCommand());
+    }
+
+    /**
+     * AI-Assisted by Gemini.
+     * All logic and assertions have been manually verified
+     * and refined to meet project requirements.
+     */
+    @Test
+    public void findTasks_partialKeyword_returnsMatches() {
+        ChatBot bot = createBot();
+        bot.getResponse("todo reading");
+        String response = bot.getResponse("find read");
+        assertTrue(response.contains("reading"));
+    }
+
+    /**
+     * AI-Assisted by Gemini.
+     * All logic and assertions have been manually verified
+     * and refined to meet project requirements.
+     */
+    @Test
+    public void findTasks_multipleMatches_returnsAll() {
+        ChatBot bot = createBot();
+        bot.getResponse("todo book A");
+        bot.getResponse("todo book B");
+        bot.getResponse("todo car");
+
+        String response = bot.getResponse("find book");
+        assertTrue(response.contains("book A"));
+        assertTrue(response.contains("book B"));
+        assertFalse(response.contains("car"));
+    }
+
+    /**
+     * AI-Assisted by Gemini.
+     * All logic and assertions have been manually verified
+     * and refined to meet project requirements.
+     */
+    @Test
+    public void getResponse_extraSpacesInInput_processesCorrectly() {
+        ChatBot bot = createBot();
+        String response = bot.getResponse("todo     spaced out task");
+        assertTrue(response.contains("spaced out task"));
+    }
+
+    /**
+     * AI-Assisted by Gemini.
+     * All logic and assertions have been manually verified
+     * and refined to meet project requirements.
+     */
+    @Test
+    public void getResponse_indexZero_returnsErrorMessage() {
+        ChatBot bot = createBot();
+        bot.getResponse("todo valid task");
+        String response = bot.getResponse("mark 0");
+        assertTrue(response.contains("error"));
+    }
+
+    /**
+     * AI-Assisted by Gemini.
+     * All logic and assertions have been manually verified
+     * and refined to meet project requirements.
+     */
+    @Test
+    public void getResponse_indexTooHigh_returnsErrorMessage() {
+        ChatBot bot = createBot();
+        bot.getResponse("todo valid task");
+        String response = bot.getResponse("remove 2");
+        assertTrue(response.contains("error"));
     }
 }
