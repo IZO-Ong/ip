@@ -64,7 +64,10 @@ public class MainWindow extends AnchorPane {
         userInput.clear();
 
         if (commandType == Command.BYE) {
-            // 3 second delay
+            // Disable input so user can't send more messages
+            userInput.setDisable(true);
+            sendButton.setDisable(true);
+
             PauseTransition delay = new PauseTransition(Duration.seconds(2));
             delay.setOnFinished(event -> Platform.exit());
             delay.play();
