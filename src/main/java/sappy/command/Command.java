@@ -15,24 +15,6 @@ public enum Command {
     EVENT,
     REMOVE,
     FIND,
+    ERROR,
     UNKNOWN;
-
-    /**
-     * Parses a raw string input to determine the corresponding Command.
-     * If the input is null, empty or unrecognized, returns UNKNOWN.
-     *
-     * @param input The raw string input from the user.
-     * @return The matching Command enum constant.
-     */
-    public static Command fromString(String input) {
-        if (input == null || input.trim().isEmpty()) {
-            return UNKNOWN;
-        }
-        String action = input.split(" ")[0].toUpperCase();
-        try {
-            return Command.valueOf(action);
-        } catch (IllegalArgumentException e) {
-            return UNKNOWN;
-        }
-    }
 }

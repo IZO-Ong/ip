@@ -1,5 +1,6 @@
 package sappy.parser;
 
+import sappy.command.Command;
 import sappy.logic.SappyException;
 
 /**
@@ -111,5 +112,24 @@ public class Parser {
             throw new SappyException("The search keyword cannot be empty.");
         }
         return keyword;
+    }
+
+    /**
+     * Parses a raw string input to determine the corresponding Command.
+     * If the input is null, empty or unrecognized, returns UNKNOWN.
+     *
+     * @param input The raw string input from the user.
+     * @return The matching Command enum constant.
+     */
+    public static Command parseCommand(String input) {
+        if (input == null || input.trim().isEmpty()) {
+            return Command.UNKNOWN;
+        }
+        String action = input.trim().split(" ")[0].toUpperCase();
+        try {
+            return Command.valueOf(action);
+        } catch (IllegalArgumentException e) {
+            return Command.UNKNOWN;
+        }
     }
 }

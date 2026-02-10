@@ -22,12 +22,18 @@
 }
 
 .delete-label {
-    -fx-background-color: #ffcdd2;
+    -fx-background-color: #e1bee7;
 }
 
 .reply-label {
     -fx-background-radius: 1em 1em 1em 0;
     -fx-border-radius: 1em 1em 1em 0;
+}
+
+.error-label {
+    -fx-background-color: #ffcccc;
+    -fx-text-fill: #cc0000;
+    -fx-border-color: #ff0000;
 }
 
 #displayPicture {

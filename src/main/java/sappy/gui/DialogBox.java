@@ -71,6 +71,9 @@ public class DialogBox extends HBox {
      */
     private void changeDialogStyle(Command commandType) {
         switch (commandType) {
+        case ERROR:
+            dialog.getStyleClass().add("error-label");
+            break;
         case TODO:
             //fallthrough
         case DEADLINE:
