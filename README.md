@@ -1,22 +1,98 @@
-# Sappy project template
+# Sappy - User Guide
 
-This is a project template for a greenfield Java project. Given below are instructions on how to use it.
+**Sappy** is a desktop application for managing tasks, optimized for use via a Graphical User Interface (GUI) with a Command Line Interface (CLI) input style.
 
-## Setting up in Intellij
+---
 
-Prerequisites: JDK 17, update Intellij to the most recent version.
+## Quick Start
 
-1. Open Intellij (if you are not in the welcome screen, click `File` > `Close Project` to close the existing project first)
-2. Open the project into Intellij as follows:
-   1. Click `Open`.
-   1. Select the project directory, and click `OK`.
-   1. If there are any further prompts, accept the defaults.
-3. Configure the project to use **JDK 17** (not other versions) as explained in [here](https://www.jetbrains.com/help/idea/sdk.html#set-up-jdk).<br>
-   In the same dialog, set the **Project language level** field to the `SDK default` option.
-4. After that, locate the `src/main/java/Sappy.java` file, right-click it, and choose `Run Sappy.main()` (if the code editor is showing compile errors, try restarting the IDE). If the setup is correct, a desktop application should pop up. You should see something like the below as the output:
+1. Ensure you have **Java 17** or above installed on your computer.
+2. Download the latest `sappy.jar` from the releases page.
+3. Copy the file to the folder you want to use as the home folder for your task list.
+4. Open a command terminal, `cd` into the folder, and run:  
+   `java -jar sappy.jar`
+5. A GUI should appear in a few seconds. Type your commands in the text box and press **Enter** to execute.
 
-<p align="center">
-  <img src="docs/Ui.png" width="400" title="Sappy UI">
-</p>
+---
 
-**Warning:** Keep the `src\main\java` folder as the root folder for Java files (i.e., don't rename those folders or move Java files to another folder outside of this folder path), as this is the default location some tools (e.g., Gradle) expect to find Java files.
+## Features
+
+### Notes about the command format:
+* Words in `UPPER_CASE` are the parameters to be supplied by the user.
+    * e.g., in `todo DESCRIPTION`, `DESCRIPTION` is a parameter: `todo Buy groceries`.
+* Items in square brackets are optional.
+    * e.g., `find KEYWORD [MORE_KEYWORDS]` can be used as `find book` or `find book project`.
+* Extraneous parameters for commands that do not take in parameters (such as `list` and `bye`) will be ignored.
+
+---
+
+### Adding a ToDo: `todo`
+Adds a basic task without any date or time constraints.
+* **Format:** `todo DESCRIPTION`
+* **Example:** `todo Read textbook chapter 1`
+
+### Adding a Deadline: `deadline`
+Adds a task with a specific deadline date.
+* **Format:** `deadline DESCRIPTION /by yyyy-mm-dd`
+* **Example:** `deadline CS2103T Project /by 2026-02-13`
+
+### Adding an Event: `event`
+Adds a task that occurs during a specific time period.
+* **Format:** `event DESCRIPTION /from yyyy-mm-dd /to yyyy-mm-dd`
+* **Example:** `event Project Workshop /from 2026-12-01 /to 2026-12-05`
+
+### Listing all tasks: `list`
+Lists all tasks currently stored in the application.
+* **Format:** `list`
+
+### Marking a task: `mark`
+Marks a specific task as completed based on its index.
+* **Format:** `mark INDEX`
+* **Example:** `mark 1`
+
+### Unmarking a task: `unmark`
+Reverts a completed task back to an incomplete status.
+* **Format:** `unmark INDEX`
+* **Example:** `unmark 1`
+
+### Locating tasks by name: `find`
+Searches for tasks whose descriptions contain the specified keyword.
+* **Format:** `find KEYWORD`
+* **Note:** The search is case-insensitive.
+* **Example:** `find Tutorial`
+
+### Deleting a task: `remove`
+Permanently deletes the specified task from the list.
+* **Format:** `remove INDEX`
+* **Example:** `remove 2`
+
+### Exiting the program: `bye`
+Exits and closes the application.
+* **Format:** `bye`
+
+---
+
+## Saving Data
+
+Sappy saves your data automatically to the hard disk after any command that modifies the task list. Manual saving is not required.
+
+### Editing the Data File
+Task data is saved automatically as a text file at `[JAR location]/data/sappy.txt`. Advanced users may edit the data file directly.
+
+> **Caution:** If manual edits make the data file format invalid, Sappy will attempt to discard the corrupted lines and load the remaining valid entries.
+
+---
+
+## Command Summary
+
+| Action | Format | Example |
+| :--- | :--- | :--- |
+| **ToDo** | `todo DESCRIPTION` | `todo Study` |
+| **Deadline** | `deadline DESCRIPTION /by yyyy-mm-dd` | `deadline Exam /by 2026-05-01` |
+| **Event** | `event DESCRIPTION /from yyyy-mm-dd /to yyyy-mm-dd` | `event Trip /from 2026-06-01 /to 2026-06-05` |
+| **List** | `list` | `list` |
+| **Mark** | `mark INDEX` | `mark 2` |
+| **Unmark** | `unmark INDEX` | `unmark 2` |
+| **Find** | `find KEYWORD` | `find lecture` |
+| **Remove** | `remove INDEX` | `remove 1` |
+| **Exit** | `bye` | `bye` |
