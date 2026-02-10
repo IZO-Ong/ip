@@ -18,7 +18,7 @@ public class DeadlineTest {
         ChatBot bot = createBot();
         // User provides "tomorrow" instead of "yyyy-mm-dd"
         String response = bot.getResponse("deadline return book /by tomorrow");
-        assertEquals("Sappy got an error! Please provide the date in yyyy-mm-dd format.", response);
+        assertEquals("Coo coo! Sappy hit a window: Please provide the date in yyyy-mm-dd format.", response);
     }
 
     @Test

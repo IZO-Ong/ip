@@ -18,14 +18,14 @@ public class EventTest {
         ChatBot bot = createBot();
         // User provides "today" instead of "yyyy-mm-dd"
         String response = bot.getResponse("event orientation /from today /to 2026-01-30");
-        assertEquals("Sappy got an error! Please provide dates in yyyy-mm-dd format.", response);
+        assertEquals("Coo coo! Sappy hit a window: Please provide dates in yyyy-mm-dd format.", response);
     }
 
     @Test
     public void getResponse_endDateBeforeStartDate_returnsLogicError() {
         ChatBot bot = createBot();
         String response = bot.getResponse("event party /from 2026-12-25 /to 2026-01-01");
-        assertEquals("Sappy got an error! End date cannot be earlier than the start date!", response);
+        assertEquals("Coo coo! Sappy hit a window: End date cannot be earlier than the start date!", response);
     }
 
     @Test

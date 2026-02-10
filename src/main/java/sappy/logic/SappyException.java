@@ -11,6 +11,6 @@ public class SappyException extends Exception {
      * @param message The specific error message detail.
      */
     public SappyException(String message) {
-        super("Sappy got an error! " + message);
+        super("Coo coo! Sappy hit a window: " + message);
     }
 }

@@ -45,9 +45,9 @@ public abstract class Task {
     public String markDone() {
         if (!isDone) {
             isDone = true;
-            return "I've marked this task as done:\n  " + this.toString();
+            return "Chirp chirp! Sappy will mark this task as done:\n  " + this.toString();
         }
-        return "This task is already marked as done!";
+        return "Sappy believes this task is already marked as done!";
     }
 
     private String getCheckboxIcon() {
@@ -62,9 +62,9 @@ public abstract class Task {
     public String markUndone() {
         if (isDone) {
             isDone = false;
-            return "OK, I've marked this task as not done yet:\n  " + this.toString();
+            return "Coo... Sappy will unmark this task:\n  " + this.toString();
         }
-        return "This task is already not done!";
+        return "Sappy believes this task is already not done!";
     }
 
     /**
@@ -108,5 +108,17 @@ public abstract class Task {
     @Override
     public int hashCode() {
         return description.hashCode();
+    }
+
+    /**
+     * Checks if the task's description contains the specified keyword, ignoring case.
+     * @param keyword The sequence of characters to search for.
+     * @return {@code true} if the description contains the keyword (case-insensitive)
+     */
+    public boolean containsInDescription(String keyword) {
+        if (keyword == null || keyword.isBlank()) {
+            return false;
+        }
+        return this.description.toLowerCase().contains(keyword.toLowerCase());
     }
 }
