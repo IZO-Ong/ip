@@ -118,7 +118,7 @@ public class TaskList {
      */
     private void validateIndex(int index) throws SappyException {
         if (index < 0 || index >= tasks.size()) {
-            throw new SappyException("That task does not exist!");
+            throw new SappyException("Sappy can't find that task!");
         }
     }
 }

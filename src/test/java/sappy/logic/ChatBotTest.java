@@ -22,21 +22,21 @@ public class ChatBotTest {
     public void getResponse_byeCommand_returnsLonelyMessage() {
         ChatBot bot = createBot();
         String response = bot.getResponse("bye");
-        assertEquals("Bye! Sappy will be very lonely until you come back!", response);
+        assertEquals("Tweet tweet! Sappy will be waiting until you fly back!", response);
     }
 
     @Test
     public void getResponse_emptyTodo_returnsErrorMessage() {
         ChatBot bot = createBot();
         String response = bot.getResponse("todo ");
-        assertEquals("Sappy got an error! The description cannot be empty.", response);
+        assertEquals("Coo coo! Sappy hit a window: The description cannot be empty.", response);
     }
 
     @Test
     public void getResponse_unknownCommand_returnsErrorMessage() {
         ChatBot bot = createBot();
         String response = bot.getResponse("gibberish");
-        assertEquals("I'm sorry, I don't know what that means.", response);
+        assertEquals("Coo? Sappy doesn't understand that bird call.", response);
     }
 
     @Test
@@ -48,13 +48,14 @@ public class ChatBotTest {
         String response = bot.getResponse("find book");
         assertTrue(response.contains("read book"));
         assertFalse(response.contains("buy bread"));
+        assertTrue(response.contains("Peep! I've scouted the matching tasks:"));
     }
 
     @Test
     public void getResponse_findNoMatch_returnsNoMatchMessage() {
         ChatBot bot = createBot();
         String response = bot.getResponse("find non-existent");
-        assertEquals("No matching tasks found in your list.", response);
+        assertEquals("Sappy looked everywhere, but couldn't find any twigs matching 'non-existent'!", response);
     }
 
     @Test
@@ -63,6 +64,7 @@ public class ChatBotTest {
         bot.getResponse("todo read book");
 
         String response = bot.getResponse("mark 1");
+        assertTrue(response.contains("Chirp chirp!"));
         assertTrue(response.contains("[X]"));
         assertTrue(response.contains("read book"));
     }
@@ -74,6 +76,7 @@ public class ChatBotTest {
         bot.getResponse("mark 1");
 
         String response = bot.getResponse("unmark 1");
+        assertTrue(response.contains("Coo..."));
         assertTrue(response.contains("[ ]"));
         assertFalse(response.contains("[X]"));
     }
@@ -82,14 +85,14 @@ public class ChatBotTest {
     public void markTask_invalidIndex_returnsErrorMessage() {
         ChatBot bot = createBot();
         String response = bot.getResponse("mark 1");
-        assertEquals("Sappy got an error! That task does not exist!", response);
+        assertEquals("Coo coo! Sappy hit a window: Sappy can't find that task!", response);
     }
 
     @Test
     public void listTasks_emptyList_returnsEmptyMessage() {
         ChatBot bot = createBot();
         String response = bot.getResponse("list");
-        assertEquals("Your task list is currently empty!", response);
+        assertEquals("Chirp! Your nest is empty! Time to gather some tasks?", response);
     }
 
     @Test
@@ -100,7 +103,7 @@ public class ChatBotTest {
 
         String response = bot.getResponse("list");
 
-        String expected = "Here are the tasks in your list:\n"
+        String expected = "Peep! Here are the seeds in your garden:\n"
                 + "1. [T][ ] read book\n"
                 + "2. [T][ ] buy bread";
 
@@ -132,7 +135,7 @@ public class ChatBotTest {
         bot.getResponse("todo read book");
 
         String response = bot.getResponse("todo read book");
-        assertEquals("Sappy got an error! This task already exists in your list!", response);
+        assertEquals("Coo coo! Sappy hit a window: Sappy already has this twig in the nest!", response);
     }
 
     @Test
@@ -146,7 +149,7 @@ public class ChatBotTest {
         assertEquals(Command.LIST, bot.getLastCommand());
 
         bot.getResponse("invalid command");
-        assertNotEquals(Command.LIST, bot.getLastCommand());
+        assertEquals(Command.UNKNOWN, bot.getLastCommand());
     }
 
     /**
@@ -202,7 +205,7 @@ public class ChatBotTest {
         ChatBot bot = createBot();
         bot.getResponse("todo valid task");
         String response = bot.getResponse("mark 0");
-        assertTrue(response.contains("error"));
+        assertEquals("Coo coo! Sappy hit a window: Sappy can't find that task!", response);
     }
 
     /**
@@ -215,6 +218,6 @@ public class ChatBotTest {
         ChatBot bot = createBot();
         bot.getResponse("todo valid task");
         String response = bot.getResponse("remove 2");
-        assertTrue(response.contains("error"));
+        assertEquals("Coo coo! Sappy hit a window: Sappy can't find that task!", response);
     }
 }

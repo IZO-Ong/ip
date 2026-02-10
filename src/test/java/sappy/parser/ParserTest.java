@@ -18,6 +18,6 @@ public class ParserTest {
         SappyException thrown = assertThrows(SappyException.class, () -> {
             Parser.parseId("mark abc", 5);
         });
-        assertEquals("Sappy got an error! Please provide a valid task number.", thrown.getMessage());
+        assertEquals("Coo coo! Sappy hit a window: Please provide a valid task number.", thrown.getMessage());
     }
 }

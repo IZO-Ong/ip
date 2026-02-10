@@ -75,14 +75,14 @@ public class ChatBot {
         List<Task> tasks = taskList.getAllTasks();
 
         if (tasks.isEmpty()) {
-            return "Your task list is currently empty!";
+            return "Chirp! Your nest is empty! Time to gather some tasks?";
         }
 
         String formattedTasks = IntStream.range(0, tasks.size())
                 .mapToObj(i -> (i + 1) + ". " + tasks.get(i).toString())
                 .collect(Collectors.joining("\n"));
 
-        return "Here are the tasks in your list:\n" + formattedTasks;
+        return "Peep! Here are the seeds in your garden:\n" + formattedTasks;
     }
 
     /**
@@ -94,7 +94,7 @@ public class ChatBot {
      */
     public String addToDo(String description) throws SappyException {
         if (description.trim().isEmpty()) {
-            throw new SappyException("The description cannot be empty.");
+            throw new SappyException("Coo? Perhaps you missed out on the description?");
         }
         Task t = new ToDo(description);
         return addTask(t);
@@ -129,7 +129,7 @@ public class ChatBot {
         int oldSize = taskList.getSize();
 
         if (taskList.contains(t)) {
-            throw new SappyException("This task already exists in your list!");
+            throw new SappyException("Sappy already has this twig in the nest!");
         }
 
         taskList.add(t);
@@ -148,8 +148,8 @@ public class ChatBot {
     }
 
     private String getSuccessMessage(Task t) {
-        return "I've added this task:\n  " + t.toString()
-                + "\nNow you have " + taskList.getSize() + " task(s) in the list.";
+        return "I've tucked this into the nest:\n  " + t.toString()
+                + "\nYou have " + taskList.getSize() + " task(s) to look after now!";
     }
 
     /**
@@ -187,7 +187,7 @@ public class ChatBot {
      */
     public String removeTask(int taskId) throws SappyException {
         if (taskList.isEmpty()) {
-            throw new SappyException("Your task list is empty!");
+            throw new SappyException("There's nothing in the nest to peck away!");
         }
 
         int oldSize = taskList.getSize();
@@ -197,8 +197,8 @@ public class ChatBot {
         assert taskList.getSize() == oldSize - 1 : "Task list size should decrease by 1";
 
         autoSave();
-        return "I've removed this task:\n" + removed.toString()
-                + "\nNow you have " + taskList.getSize() + " task(s) in the list.";
+        return "Whoosh! That task has flown away:\n" + removed.toString()
+                + "\nNow your nest has " + taskList.getSize() + " task(s) left!";
     }
 
     /**
@@ -209,18 +209,18 @@ public class ChatBot {
      */
     public String findTasks(String keyword) throws SappyException {
         List<Task> matchingTasks = taskList.getAllTasks().stream()
-                .filter(task -> task.toString().contains(keyword))
+                .filter(task -> task.containsInDescription(keyword))
                 .toList();
 
         if (matchingTasks.isEmpty()) {
-            return "No matching tasks found in your list.";
+            return "Sappy looked everywhere, but couldn't find any twigs matching '" + keyword + "'!";
         }
 
         String formattedTasks = IntStream.range(0, matchingTasks.size())
                 .mapToObj(i -> (i + 1) + "." + matchingTasks.get(i))
                 .collect(Collectors.joining("\n"));
 
-        return "Here are the matching tasks in your list:\n" + formattedTasks;
+        return "Peep! I've scouted the matching tasks:\n" + formattedTasks;
     }
 
     /**
@@ -248,7 +248,7 @@ public class ChatBot {
 
             switch (cmd) {
             case BYE:
-                return "Bye! " + this.name + " will be very lonely until you come back!";
+                return "Tweet tweet! " + this.name + " will be waiting until you fly back!";
             case LIST:
                 return listTasks();
             case MARK:
@@ -266,7 +266,7 @@ public class ChatBot {
             case EVENT:
                 return addEvent(Parser.parseEventDetails(input, offset));
             default:
-                return "I'm sorry, I don't know what that means.";
+                return "Coo? " + this.name + " doesn't understand that bird call.";
             }
         } catch (SappyException e) {
             this.lastCommand = Command.ERROR;
