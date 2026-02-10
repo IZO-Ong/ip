@@ -125,18 +125,19 @@ public class Storage {
         try (Scanner s = new Scanner(f)) {
             while (s.hasNext()) {
                 String line = s.nextLine();
-
                 if (line.trim().isEmpty()) {
                     continue;
                 }
-
-                loadedTasks.add(parseLineToTask(line));
+                try {
+                    loadedTasks.add(parseLineToTask(line));
+                } catch (SappyException e) {
+                    System.err.println("Skipping corrupted line: " + line + " | Error: " + e.getMessage());
+                }
             }
         } catch (FileNotFoundException e) {
             return new ArrayList<>();
-        } catch (Exception e) {
-            throw new SappyException("Error loading file: " + e.getMessage());
         }
+
         return loadedTasks;
     }
 }

@@ -186,6 +186,10 @@ public class ChatBot {
      * @throws SappyException If the taskID is invalid.
      */
     public String removeTask(int taskId) throws SappyException {
+        if (taskList.isEmpty()) {
+            throw new SappyException("Your task list is empty!");
+        }
+
         int oldSize = taskList.getSize();
         assert oldSize > 0 : "Cannot remove from an empty list";
 
@@ -236,7 +240,7 @@ public class ChatBot {
         assert !Objects.equals(input, "") : "Input string to getResponse should not be empty";
 
         try {
-            Command cmd = Command.fromString(input);
+            Command cmd = Parser.parseCommand(input);
             this.lastCommand = cmd;
 
             String commandWord = input.trim().split(" ")[0];
@@ -265,6 +269,7 @@ public class ChatBot {
                 return "I'm sorry, I don't know what that means.";
             }
         } catch (SappyException e) {
+            this.lastCommand = Command.ERROR;
             return e.getMessage();
         }
     }
