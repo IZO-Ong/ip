@@ -11,7 +11,7 @@
 ## Quick Start
 
 1. Ensure you have **Java 17** or above installed on your computer.
-2. Download the latest `sappy.jar` from the releases page.
+2. Download the latest `sappy.jar` from the [releases](https://github.com/izo-ong/ip/releases) page.
 3. Copy the file to the folder you want to use as the home folder for your task list.
 4. Open a command terminal, `cd` into the folder, and run:  
    `java -jar sappy.jar`
