@@ -10,14 +10,14 @@ import sappy.logic.SappyException;
 public class ParserTest {
     @Test
     public void parseId_validInput_success() throws SappyException {
-        assertEquals(5, Parser.parseId("mark 5", 5));
+        assertEquals(5, Parser.parseId("mark 5"));
     }
 
     @Test
     public void parseId_invalidInput_exceptionThrown() {
         SappyException thrown = assertThrows(SappyException.class, () -> {
-            Parser.parseId("mark abc", 5);
+            Parser.parseId("mark abc");
         });
-        assertEquals("Coo coo! Sappy hit a window: Please provide a valid task number.", thrown.getMessage());
+        assertEquals("Coo coo! Sappy hit a window: That doesn't look like a number!", thrown.getMessage());
     }
 }

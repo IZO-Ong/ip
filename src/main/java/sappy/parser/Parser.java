@@ -10,21 +10,21 @@ import sappy.logic.SappyException;
 public class Parser {
 
     /**
-     * Extracts a numeric task ID from a command string starting from a given offset.
+     * Extracts a numeric task ID from a command string.
      *
      * @param input The raw user input string.
-     * @param offset The starting index where the ID is expected to begin.
      * @return The parsed integer task ID.
-     * @throws SappyException If the input is malformed or the ID is not a valid integer.
+     * @throws SappyException If the ID is missing or not a valid integer.
      */
-    public static int parseId(String input, int offset) throws SappyException {
-        assert offset >= 0 : "Offset cannot be negative";
-        assert offset <= input.length() : "Offset " + offset + " is out of bounds for input: " + input;
-
+    public static int parseId(String input) throws SappyException {
+        String[] parts = input.trim().split("\\s+", 2);
+        if (parts.length < 2 || parts[1].trim().isEmpty()) {
+            throw new SappyException("Sappy needs a task number to peck at!");
+        }
         try {
-            return Integer.parseInt(input.substring(offset).trim());
-        } catch (NumberFormatException | StringIndexOutOfBoundsException e) {
-            throw new SappyException("Please provide a valid task number.");
+            return Integer.parseInt(parts[1].trim());
+        } catch (NumberFormatException e) {
+            throw new SappyException("That doesn't look like a number!");
         }
     }
 
@@ -32,34 +32,30 @@ public class Parser {
      * Parses todo input to extract description.
      *
      * @param input The raw user input string.
-     * @param offset The starting index where the description is expected to begin.
      * @return The trimmed description string.
      * @throws SappyException If the resulting description is empty.
      */
-    public static String parseToDoDetails(String input, int offset) throws SappyException {
-        assert offset >= 0 : "Offset cannot be negative";
-        assert offset <= input.length() : "Offset " + offset + " is out of bounds for input: " + input;
-
-        String description = input.substring(offset).trim();
-        if (description.isEmpty()) {
+    public static String parseToDoDetails(String input) throws SappyException {
+        String[] parts = input.trim().split("\\s+", 2);
+        if (parts.length < 2 || parts[1].trim().isEmpty()) {
             throw new SappyException("The description cannot be empty.");
         }
-        return description;
+        return parts[1].trim();
     }
 
     /**
      * Parses deadline input to extract description and date.
      * @param input Raw user input.
-     * @param offset Starting index after the command word.
      * @return String array where [0] is description and [1] is date.
      * @throws SappyException If /by is missing or parts are empty.
      */
-    public static String[] parseDeadlineDetails(String input, int offset) throws SappyException {
-        assert input != null : "Input string cannot be null";
-        assert offset >= 0 : "Offset cannot be negative";
-        assert offset <= input.length() : "Offset " + offset + " is out of bounds for input: " + input;
-        String content = input.substring(offset).trim();
+    public static String[] parseDeadlineDetails(String input) throws SappyException {
+        String[] mainParts = input.trim().split("\\s+", 2);
+        if (mainParts.length < 2 || mainParts[1].trim().isEmpty()) {
+            throw new SappyException("A deadline needs a description and a /by date!");
+        }
 
+        String content = mainParts[1];
         if (!content.contains("/by")) {
             throw new SappyException("A deadline must have a /by date.");
         }
@@ -74,16 +70,16 @@ public class Parser {
     /**
      * Parses event input to extract description, start date, and end date.
      * @param input Raw user input.
-     * @param offset Starting index after the command word.
      * @return String array where [0] is description, [1] is from, and [2] is to.
      * @throws SappyException If /from or /to is missing or parts are empty.
      */
-    public static String[] parseEventDetails(String input, int offset) throws SappyException {
-        assert input != null : "Input string cannot be null";
-        assert offset >= 0 : "Offset cannot be negative";
-        assert offset <= input.length() : "Offset " + offset + " is out of bounds for input: " + input;
-        String content = input.substring(offset).trim();
+    public static String[] parseEventDetails(String input) throws SappyException {
+        String[] mainParts = input.trim().split("\\s+", 2);
+        if (mainParts.length < 2 || mainParts[1].trim().isEmpty()) {
+            throw new SappyException("An event needs a description, /from, and /to dates!");
+        }
 
+        String content = mainParts[1];
         if (!content.contains("/from") || !content.contains("/to")) {
             throw new SappyException("An event must have a /from and /to date.");
         }
@@ -96,22 +92,18 @@ public class Parser {
     }
 
     /**
-     * Extracts a search keyword from a command string starting from a given offset.
+     * Extracts a search keyword from a command string.
      *
      * @param input The raw user input string.
-     * @param offset The starting index where the keyword is expected to begin.
      * @return The trimmed keyword string.
      * @throws SappyException If the keyword is empty.
      */
-    public static String parseKeyword(String input, int offset) throws SappyException {
-        assert offset >= 0 : "Offset cannot be negative";
-        assert offset <= input.length() : "Offset " + offset + " is out of bounds for input: " + input;
-
-        String keyword = input.substring(offset).trim();
-        if (keyword.isEmpty()) {
-            throw new SappyException("The search keyword cannot be empty.");
+    public static String parseKeyword(String input) throws SappyException {
+        String[] parts = input.trim().split("\\s+", 2);
+        if (parts.length < 2 || parts[1].trim().isEmpty()) {
+            throw new SappyException("Sappy needs a word to scout for!");
         }
-        return keyword;
+        return parts[1].trim();
     }
 
     /**
@@ -125,7 +117,7 @@ public class Parser {
         if (input == null || input.trim().isEmpty()) {
             return Command.UNKNOWN;
         }
-        String action = input.trim().split(" ")[0].toUpperCase();
+        String action = input.trim().split("\\s+")[0].toUpperCase();
         try {
             return Command.valueOf(action);
         } catch (IllegalArgumentException e) {

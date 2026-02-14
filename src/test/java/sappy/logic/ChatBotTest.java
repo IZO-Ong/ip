@@ -220,4 +220,18 @@ public class ChatBotTest {
         String response = bot.getResponse("remove 2");
         assertEquals("Coo coo! Sappy hit a window: Sappy can't find that task!", response);
     }
+
+    @Test
+    public void getResponse_emptyMarkIndex_returnsErrorMessage() {
+        ChatBot bot = createBot();
+        String response = bot.getResponse("mark");
+        assertEquals("Coo coo! Sappy hit a window: Sappy needs a task number to peck at!", response);
+    }
+
+    @Test
+    public void getResponse_emptyFindKeyword_returnsErrorMessage() {
+        ChatBot bot = createBot();
+        String response = bot.getResponse("find ");
+        assertEquals("Coo coo! Sappy hit a window: Sappy needs a word to scout for!", response);
+    }
 }
