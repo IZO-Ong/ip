@@ -24,9 +24,7 @@
 ### Notes about the command format:
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.
     * e.g., in `todo DESCRIPTION`, `DESCRIPTION` is a parameter: `todo Buy groceries`.
-* Items in square brackets are optional.
-    * e.g., `find KEYWORD [MORE_KEYWORDS]` can be used as `find book` or `find book project`.
-* Extraneous parameters for commands that do not take in parameters (such as `list` and `bye`) will be ignored.
+* Extra parameters for commands that do not take in parameters (such as `list` and `bye`) will be ignored.
 
 ---
 
